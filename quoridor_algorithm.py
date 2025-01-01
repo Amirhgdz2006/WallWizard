@@ -297,6 +297,19 @@ def check_wall(wall_command):
                 check_wall_command = True
             else:
                 check_wall_command = False
+                
+        if check_wall_command:
+            if wall_command[2] == "h":
+                if playground_original[wall_command[0] * 2 - 1][wall_command[1] - 1] != 0 and playground_original[wall_command[0] * 2 - 1][wall_command[1] * 2] != 0 and playground_original[wall_command[0] * 2 - 1][wall_command[1] * 2 - 2] != 0:
+                    check_wall_command = True
+                else:
+                    check_wall_command = False
+            elif wall_command[2] == "v":
+                if playground_original[wall_command[0] * 2 - 1][wall_command[1] * 2 - 1]!= 0 and playground_original[wall_command[0] * 2][wall_command[1] * 2 - 1]!= 0 and playground_original[wall_command[0] * 2 - 2][wall_command[1] * 2 - 1]!= 0:
+                    check_wall_command = True
+                else:
+                    check_wall_command = False
+
 
     if check_wall_command:
         wall_command = [int(wall_command[0]),int(wall_command[1]),wall_command[2]]
