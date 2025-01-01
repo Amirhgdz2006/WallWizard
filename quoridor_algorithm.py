@@ -1,25 +1,26 @@
 from termcolor import colored
+import copy
 import os
+                    
+playground = [[" ","|"," ","|"," ","|"," ","|", 2 ,"|"," ","|"," ","|"," ","|"," "],
+              ["—","+","—","+","—","+","—","+","—","+","—","+","—","+","—","+","—"],
+              [" ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," "],
+              ["—","+","—","+","—","+","—","+","—","+","—","+","—","+","—","+","—"],
+              [" ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," "],
+              ["—","+","—","+","—","+","—","+","—","+","—","+","—","+","—","+","—"],
+              [" ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," "],
+              ["—","+","—","+","—","+","—","+","—","+","—","+","—","+","—","+","—"],
+              [" ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," "],
+              ["—","+","—","+","—","+","—","+","—","+","—","+","—","+","—","+","—"],
+              [" ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," "],
+              ["—","+","—","+","—","+","—","+","—","+","—","+","—","+","—","+","—"],
+              [" ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," "],
+              ["—","+","—","+","—","+","—","+","—","+","—","+","—","+","—","+","—"],
+              [" ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," "],
+              ["—","+","—","+","—","+","—","+","—","+","—","+","—","+","—","+","—"],
+              [" ","|"," ","|"," ","|"," ","|", 1 ,"|"," ","|"," ","|"," ","|"," "]]
 
-playground = [[" ","|"," ","|"," ","|"," ","|", 1 ,"|"," ","|"," ","|"," ","|"," "],
-              ["—","+","—","+","—","+","—","+","—","+","—","+","—","+","—","+","—"],
-              [" ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," "],
-              ["—","+","—","+","—","+","—","+","—","+","—","+","—","+","—","+","—"],
-              [" ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," "],
-              ["—","+","—","+","—","+","—","+","—","+","—","+","—","+","—","+","—"],
-              [" ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," "],
-              ["—","+","—","+","—","+","—","+","—","+","—","+","—","+","—","+","—"],
-              [" ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," "],
-              ["—","+","—","+","—","+","—","+","—","+","—","+","—","+","—","+","—"],
-              [" ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," "],
-              ["—","+","—","+","—","+","—","+","—","+","—","+","—","+","—","+","—"],
-              [" ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," "],
-              ["—","+","—","+","—","+","—","+","—","+","—","+","—","+","—","+","—"],
-              [" ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," "],
-              ["—","+","—","+","—","+","—","+","—","+","—","+","—","+","—","+","—"],
-              [" ","|"," ","|"," ","|"," ","|", 2 ,"|"," ","|"," ","|"," ","|"," "]]
-
-playground_original = [[" "," "," "," "," "," "," "," ", 1 ," "," "," "," "," "," "," "," "],
+playground_original = [[" "," "," "," "," "," "," "," ", 2 ," "," "," "," "," "," "," "," "],
                        [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
                        [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
                        [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
@@ -35,135 +36,29 @@ playground_original = [[" "," "," "," "," "," "," "," ", 1 ," "," "," "," "," ",
                        [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
                        [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
                        [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
-                       [" "," "," "," "," س"," "," "," ", 2 ," "," "," "," "," "," "," "," "]]
+                       [" "," "," "," "," "," "," "," ", 1 ," "," "," "," "," "," "," "," "]]
 
 def clear():
     os.system('cls||clear')
 
-row1 , column1 = 0 , 8
-row2 , column2 = 16 , 8
+
+row1 , column1 = 16 , 8
+row2 , column2 = 0 , 8
+
     
 def check_move(pawn,command):
-
-    def move_left():
-        global row1,column1,row2,column2
-        if pawn == 1:
-            if playground_original[row1][column1 - 1] == 0 :
-                print(colored("Move blocked by wall, please try again :","red"))
-                while True:
-                    command = input(f"player {turn} move: ").lower()
-                    if command == "u" or command == "d" or command == "l" or command == "r" :
-                        break
-                    else:
-                        print(colored("Invalid command, please  try again :","red"))
-                check_move(1,command)
-            elif 0 <= column1 - 2 <= 16  :
-                playground[row1][column1] = " "
-                playground_original[row1][column1] = " "
-                column1 -= 2
-                playground[row1][column1] = 1
-                playground_original[row1][column1] = 1
-            else:
-                print(colored("Invalid move, please  try again :","red"))
-                while True:
-                    command = input(f"player {turn} move: ").lower()
-                    if command == "u" or command == "d" or command == "l" or command == "r" :
-                        break
-                    else:
-                        print(colored("Invalid command, please  try again :","red"))
-                check_move(1,command)
-        elif pawn == 2:
-            if playground_original[row2][column2 - 1] == 0 :
-                print(colored("Move blocked by wall, please try again :","red"))
-                while True:
-                    command = input(f"player {turn} move: ").lower()
-                    if command == "u" or command == "d" or command == "l" or command == "r" :
-                        break
-                    else:
-                        print(colored("Invalid command, please  try again :","red"))
-                check_move(2,command)
-            elif 0 <= column2 - 2 <= 16 :
-                playground[row2][column2] = " "
-                playground_original[row1][column1] = " "
-                column2 -= 2
-                playground[row2][column2] = 2
-                playground_original[row1][column1] = 2
-            else:
-                print(colored("Invalid move, please  try again :","red"))
-                while True:
-                    command = input(f"player {turn} move: ").lower()
-                    if command == "u" or command == "d" or command == "l" or command == "r" :
-                        break
-                    else:
-                        print(colored("Invalid command, please  try again :","red"))
-                check_move(2,command)
-        return playground
-
-    def move_right():
-        global row1,column1,row2,column2
-        if pawn == 1:
-            if playground_original[row1][column1 + 1] == 0 :
-                print(colored("Move blocked by wall, please try again :","red"))
-                while True:
-                    command = input(f"player {turn} move: ").lower()
-                    if command == "u" or command == "d" or command == "l" or command == "r" :
-                        break
-                    else:
-                        print(colored("Invalid command, please  try again :","red"))
-                check_move(1,command)
-            elif 0 <= column1 + 2 <= 16 :
-                playground[row1][column1] = " "
-                playground_original[row1][column1] = " "
-                column1 += 2
-                playground[row1][column1] = 1
-                playground_original[row1][column1] = 1
-            else:
-                print(colored("Invalid move, please  try again :","red"))
-                while True:
-                    command = input(f"player {turn} move: ").lower()
-                    if command == "u" or command == "d" or command == "l" or command == "r" :
-                        break
-                    else:
-                        print(colored("Invalid command, please  try again :","red"))
-                check_move(1,command)
-        elif pawn == 2:
-            if playground_original[row2][column2 + 1] == 0 :
-                print(colored("Move blocked by wall, please try again :","red"))
-                while True:
-                    command = input(f"player {turn} move: ").lower()
-                    if command == "u" or command == "d" or command == "l" or command == "r" :
-                        break
-                    else:
-                        print(colored("Invalid command, please  try again :","red"))
-                check_move(2,command)
-            elif 0 <= column2 + 2 <= 16 :
-                playground[row2][column2] = " "
-                playground_original[row1][column1] = " "
-                column2 += 2
-                playground[row2][column2] = 2
-                playground_original[row1][column1] = 2
-            else:
-                print(colored("Invalid move, please  try again :","red"))
-                while True:
-                    command = input(f"player {turn} move: ").lower()
-                    if command == "u" or command == "d" or command == "l" or command == "r" :
-                        break
-                    else:
-                        print(colored("Invalid command, please  try again :","red"))
-                check_move(2,command)
-        return playground
 
     def move_up():
         global row1,column1,row2,column2
         if pawn == 1:
             if playground_original[row1 - 1][column1] == 0 :
-                print(colored("Move blocked by wall, please try again :","red"))
+                print(colored("Move blocked by wall, please try again","red"))
                 while True:
                     command = input(f"player {turn} move: ").lower()
                     if command == "u" or command == "d" or command == "l" or command == "r" :
                         break
                     else:
-                        print(colored("Invalid command, please  try again :","red"))
+                        print(colored("Invalid command, please  try again","red"))
                 check_move(1,command)
             elif 0 <= row1 - 2 <= 16 :
                 playground[row1][column1] = " "
@@ -172,23 +67,23 @@ def check_move(pawn,command):
                 playground[row1][column1] = 1
                 playground_original[row1][column1] = 1
             else:
-                print(colored("Invalid move, please  try again :","red"))
+                print(colored("Invalid move, please  try again","red"))
                 while True:
                     command = input(f"player {turn} move: ").lower()
                     if command == "u" or command == "d" or command == "l" or command == "r" :
                         break
                     else:
-                        print(colored("Invalid command, please  try again :","red"))
+                        print(colored("Invalid command, please  try again","red"))
                 check_move(1,command)
         elif pawn == 2:
             if playground_original[row2 - 1][column2] == 0 :
-                print(colored("Move blocked by wall, please try again :","red"))
+                print(colored("Move blocked by wall, please try again","red"))
                 while True:
                     command = input(f"player {turn} move: ").lower()
                     if command == "u" or command == "d" or command == "l" or command == "r" :
                         break
                     else:
-                        print(colored("Invalid command, please  try again :","red"))
+                        print(colored("Invalid command, please  try again","red"))
                 check_move(2,command)
             elif 0 <= row2 - 2 <= 16 :
                 playground[row2][column2] = " "
@@ -197,13 +92,13 @@ def check_move(pawn,command):
                 playground[row2][column2] = 2
                 playground_original[row1][column1] = 2
             else:
-                print(colored("Invalid move, please  try again :","red"))
+                print(colored("Invalid move, please  try again","red"))
                 while True:
                     command = input(f"player {turn} move: ").lower()
                     if command == "u" or command == "d" or command == "l" or command == "r" :
                         break
                     else:
-                        print(colored("Invalid command, please  try again :","red"))
+                        print(colored("Invalid command, please  try again","red"))
                 check_move(2,command)
         return playground
 
@@ -211,13 +106,13 @@ def check_move(pawn,command):
         global row1,column1,row2,column2
         if pawn == 1:
             if playground_original[row1 + 1][column1] == 0 :
-                print(colored("Move blocked by wall, please try again :","red"))
+                print(colored("Move blocked by wall, please try again","red"))
                 while True:
                     command = input(f"player {turn} move: ").lower()
                     if command == "u" or command == "d" or command == "l" or command == "r" :
                         break
                     else:
-                        print(colored("Invalid command, please  try again :","red"))
+                        print(colored("Invalid command, please  try again","red"))
                 check_move(1,command)
             elif 0 <= row1 + 2 <= 16 :
                 playground[row1][column1] = " "
@@ -226,23 +121,23 @@ def check_move(pawn,command):
                 playground[row1][column1] = 1
                 playground_original[row1][column1] = 1
             else:
-                print(colored("Invalid move, please  try again :","red"))
+                print(colored("Invalid move, please  try again","red"))
                 while True:
                     command = input(f"player {turn} move: ").lower()
                     if command == "u" or command == "d" or command == "l" or command == "r" :
                         break
                     else:
-                        print(colored("Invalid command, please  try again :","red"))
+                        print(colored("Invalid command, please  try again","red"))
                 check_move(1,command)
         elif pawn == 2:
             if playground_original[row2 + 1][column2] == 0 :
-                print(colored("Move blocked by wall, please try again :","red"))
+                print(colored("Move blocked by wall, please try again","red"))
                 while True:
                     command = input(f"player {turn} move: ").lower()
                     if command == "u" or command == "d" or command == "l" or command == "r" :
                         break
                     else:
-                        print(colored("Invalid command, please  try again :","red"))
+                        print(colored("Invalid command, please  try again","red"))
                 check_move(2,command)
             elif 0 <= row2 + 2 <= 16 :
                 playground[row2][column2] = " "
@@ -251,15 +146,125 @@ def check_move(pawn,command):
                 playground[row2][column2] = 2
                 playground_original[row1][column1] = 2
             else:
-                print(colored("Invalid move, please  try again :","red"))
+                print(colored("Invalid move, please  try again","red"))
                 while True:
                     command = input(f"player {turn} move: ").lower()
                     if command == "u" or command == "d" or command == "l" or command == "r" :
                         break
                     else:
-                        print(colored("Invalid command, please  try again :","red"))
+                        print(colored("Invalid command, please  try again","red"))
                 check_move(2,command)
         return playground
+
+    def move_right():
+        global row1,column1,row2,column2
+        if pawn == 1:
+            if playground_original[row1][column1 + 1] == 0 :
+                print(colored("Move blocked by wall, please try again","red"))
+                while True:
+                    command = input(f"player {turn} move: ").lower()
+                    if command == "u" or command == "d" or command == "l" or command == "r" :
+                        break
+                    else:
+                        print(colored("Invalid command, please  try again","red"))
+                check_move(1,command)
+            elif 0 <= column1 + 2 <= 16 :
+                playground[row1][column1] = " "
+                playground_original[row1][column1] = " "
+                column1 += 2
+                playground[row1][column1] = 1
+                playground_original[row1][column1] = 1
+            else:
+                print(colored("Invalid move, please  try again","red"))
+                while True:
+                    command = input(f"player {turn} move: ").lower()
+                    if command == "u" or command == "d" or command == "l" or command == "r" :
+                        break
+                    else:
+                        print(colored("Invalid command, please  try again","red"))
+                check_move(1,command)
+        elif pawn == 2:
+            if playground_original[row2][column2 + 1] == 0 :
+                print(colored("Move blocked by wall, please try again","red"))
+                while True:
+                    command = input(f"player {turn} move: ").lower()
+                    if command == "u" or command == "d" or command == "l" or command == "r" :
+                        break
+                    else:
+                        print(colored("Invalid command, please  try again","red"))
+                check_move(2,command)
+            elif 0 <= column2 + 2 <= 16 :
+                playground[row2][column2] = " "
+                playground_original[row1][column1] = " "
+                column2 += 2
+                playground[row2][column2] = 2
+                playground_original[row1][column1] = 2
+            else:
+                print(colored("Invalid move, please  try again","red"))
+                while True:
+                    command = input(f"player {turn} move: ").lower()
+                    if command == "u" or command == "d" or command == "l" or command == "r" :
+                        break
+                    else:
+                        print(colored("Invalid command, please  try again","red"))
+                check_move(2,command)
+        return playground
+
+    def move_left():
+        global row1,column1,row2,column2
+        if pawn == 1:
+            if playground_original[row1][column1 - 1] == 0 :
+                print(colored("Move blocked by wall, please try again","red"))
+                while True:
+                    command = input(f"player {turn} move: ").lower()
+                    if command == "u" or command == "d" or command == "l" or command == "r" :
+                        break
+                    else:
+                        print(colored("Invalid command, please  try again","red"))
+                check_move(1,command)
+            elif 0 <= column1 - 2 <= 16  :
+                playground[row1][column1] = " "
+                playground_original[row1][column1] = " "
+                column1 -= 2
+                playground[row1][column1] = 1
+                playground_original[row1][column1] = 1
+            else:
+                print(colored("Invalid move, please  try again","red"))
+                while True:
+                    command = input(f"player {turn} move: ").lower()
+                    if command == "u" or command == "d" or command == "l" or command == "r" :
+                        break
+                    else:
+                        print(colored("Invalid command, please  try again","red"))
+                check_move(1,command)
+        elif pawn == 2:
+            if playground_original[row2][column2 - 1] == 0 :
+                print(colored("Move blocked by wall, please try again","red"))
+                while True:
+                    command = input(f"player {turn} move: ").lower()
+                    if command == "u" or command == "d" or command == "l" or command == "r" :
+                        break
+                    else:
+                        print(colored("Invalid command, please  try again","red"))
+                check_move(2,command)
+            elif 0 <= column2 - 2 <= 16 :
+                playground[row2][column2] = " "
+                playground_original[row1][column1] = " "
+                column2 -= 2
+                playground[row2][column2] = 2
+                playground_original[row1][column1] = 2
+            else:
+                print(colored("Invalid move, please  try again","red"))
+                while True:
+                    command = input(f"player {turn} move: ").lower()
+                    if command == "u" or command == "d" or command == "l" or command == "r" :
+                        break
+                    else:
+                        print(colored("Invalid command, please  try again","red"))
+                check_move(2,command)
+        return playground
+
+
 
     if command.lower() == "u":
         move_up()
@@ -310,31 +315,59 @@ def check_wall(wall_command):
                 else:
                     check_wall_command = False
 
-
     if check_wall_command:
         wall_command = [int(wall_command[0]),int(wall_command[1]),wall_command[2]]
         place_wall(wall_command)
     else :
-        print(colored("Invalid wall, please  try again :","red"))
+        print(colored("Invalid wall, please  try again","red"))
         wall_command = input("Enter wall command ( center row , center column , direction(h/v) ): ").lower()
         check_wall(wall_command)
        
 def refresh_screen():
+
+    lst = [" "," ","1"," ","2"," ","3"," ","4"," ","5"," ","6"," ","7"," ","8"," "]
+
+    playground_copy = copy.deepcopy(playground)
+    count_1 = 0
+    for item in playground_copy:
+        if playground_copy.index(item) % 2 != 0:
+            item.insert(0,str(count_1))
+        else:
+            item.insert(0,' ')
+            count_1 = count_1 + 1
+    
+    playground_copy.insert(0,lst)
+     
+    # --------------------
+
+    playground_original_copy = copy.deepcopy(playground_original)
+    count_2 = 0
+    for item in playground_original_copy:
+        if playground_original_copy.index(item) % 2 != 0:
+            item.insert(0,str(count_2))
+        else:
+            item.insert(0,' ')
+            count_2 = count_2 + 1
+    
+    playground_original_copy.insert(0,lst)
+
     clear()
-    for row in range(17):
-        for col in range(17):
-            if playground[row][col] == 2 :
-                print(colored(playground[row][col],"red"),end=" ")
-            elif playground[row][col] == 1 :
-                print(colored(playground[row][col],"blue"),end=" ")
-            elif playground_original[row][col] == 0 :
-                print(colored(playground[row][col],"yellow"),end=" ")
+    for row in range(18):
+        for col in range(18):
+            if playground_copy[row][col] == 2 :
+                print(colored(playground_copy[row][col],"red"),end=" ")
+            elif playground_copy[row][col] == 1 :
+                print(colored(playground_copy[row][col],"blue"),end=" ")
+            elif playground_original_copy[row][col] == 0 :
+                print(colored(playground_copy[row][col],"yellow"),end=" ")
             else:
-                print(colored(playground[row][col],"black"),end=" ")
+                print(colored(playground_copy[row][col],"black"),end=" ")
         print()
     print(colored(' ——————————————————————————————',"green"))
     print(colored('|  Up:u Down:d Left:l Right:r  |',"green"))
     print(colored(' ——————————————————————————————',"green"))
+
+
 
 def victory_text(pawn):
     print(colored(' ———————————————————————————————',"yellow"))
@@ -357,14 +390,17 @@ while is_running:
             refresh_screen()
             break
         else:
-            print(colored("Invalid command, please  try again :","red"))
+            print(colored("Invalid command, please  try again","red"))
     if turn == 1 :
         turn = 2
     else :
         turn = 1
-    if row1 == 16 :
+    if row1 == 0 :
         victory_text(1)
         is_running = False
-    elif row2 == 0 :
+    elif row2 == 16 :
         victory_text(2)
         is_running = False
+
+
+
