@@ -392,7 +392,7 @@ def check_move(pawn,command):
                 wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
                 check_wall(wall_command)
             else:
-                print(colored("you used up all of your walls","red"))
+                print(colored("No walls remaining","red"))
                 command = input(f"Enter move command: ").lower()
                 check_move(turn,command)
         elif turn == 2:
@@ -400,7 +400,7 @@ def check_move(pawn,command):
                 wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
                 check_wall(wall_command)
             else:
-                print(colored("you used up all of your walls","red"))
+                print(colored("No walls remaining","red"))
                 command = input(f"Enter move command: ").lower()
                 check_move(turn,command)
 
@@ -408,8 +408,8 @@ def check_move(pawn,command):
 def check_wall(wall_command):
     global turn
     global wall_player_1,wall_player_2
+
     def place_wall(list_command):
-        list_command = [list_command[0] * 2 - 1 , list_command[1] * 2 - 1 , list_command[2]]
         playground_original[list_command[0]][list_command[1]] = 0
         if list_command[2] == "h":
             playground_original[list_command[0]][list_command[1] - 1] = 0
@@ -419,15 +419,37 @@ def check_wall(wall_command):
             playground_original[list_command[0] + 1][list_command[1]] = 0
 
     if wall_command == "move":
-        new_command = input("Enter move command: ")
-        check_move(turn,new_command)
+        while True:
+            command = input(f"Enter move command: ").lower()
+            if command == "u" or command == "d" or command == "l" or command == "r" :
+                check_move(turn,command)
+                refresh_screen()
+                break
+            elif command == "wall":
+                if turn == 1:
+                    if wall_player_1 > 0:
+                        wall_command = input("Enter wall command ( center row , center column , direction(h/v) ): ").lower()
+                        check_wall(wall_command)
+                        refresh_screen()
+                        break
+                    else:
+                        print(colored("No walls remaining","red"))
+                        command = input(f"Enter move command: ").lower()
+                        check_move(turn,command)
+
+                elif turn == 2:
+                    if wall_player_2 > 0:
+                        wall_command = input("Enter wall command ( center row , center column , direction(h/v) ): ").lower()
+                        check_wall(wall_command)
+                        refresh_screen()
+                        break
+                    else:
+                        print(colored("No walls remaining","red"))
+                        command = input(f"Enter move command: ").lower()
+                        check_move(turn,command)
+            else:
+                print(colored("Invalid command, please  try again","red"))
     else:
-
-        if turn == 1:
-            wall_player_1 -= 1
-        elif turn == 2:
-            wall_player_2 -= 1
-
         wall_command = wall_command.split()
         if len(wall_command) != 3:
             check_wall_command = False
@@ -445,19 +467,24 @@ def check_wall(wall_command):
                     check_wall_command = False
                     
             if check_wall_command:
+                wall_command = [(wall_command[0]) * 2 - 1 , wall_command[1] * 2 - 1 , wall_command[2]]
                 if wall_command[2] == "h":
-                    if playground_original[wall_command[0] * 2 - 1][wall_command[1] - 1] != 0 and playground_original[wall_command[0] * 2 - 1][wall_command[1] * 2] != 0 and playground_original[wall_command[0] * 2 - 1][wall_command[1] * 2 - 2] != 0:
+                    if playground_original[wall_command[0]][wall_command[1]] != 0 and playground_original[wall_command[0]][wall_command[1]-1] != 0 and playground_original[wall_command[0]][wall_command[1]+1] != 0:
                         check_wall_command = True
                     else:
                         check_wall_command = False
                 elif wall_command[2] == "v":
-                    if playground_original[wall_command[0] * 2 - 1][wall_command[1] * 2 - 1]!= 0 and playground_original[wall_command[0] * 2][wall_command[1] * 2 - 1]!= 0 and playground_original[wall_command[0] * 2 - 2][wall_command[1] * 2 - 1]!= 0:
+                    if playground_original[wall_command[0]][wall_command[1]] != 0 and playground_original[wall_command[0]-1][wall_command[1]] != 0 and playground_original[wall_command[0]+1][wall_command[1]] != 0:
                         check_wall_command = True
                     else:
                         check_wall_command = False
 
         if check_wall_command:
             wall_command = [int(wall_command[0]),int(wall_command[1]),wall_command[2]]
+            if turn == 1:
+                wall_player_1 -= 1
+            elif turn == 2:
+                wall_player_2 -= 1
             place_wall(wall_command)
         else :
             print(colored("Invalid wall, please  try again","red"))
@@ -505,6 +532,9 @@ def refresh_screen():
     print()
     print(colored(' ————————————————————————————————— ',"light_green"))
     print(colored('|   Up:u Down:d Left:l Right:r    |',"light_green"))
+    print(colored('|—————————————————————————————————|',"light_green"))
+    print(colored('|   player 1 walls : ',"light_green"),colored(f"{wall_player_1:02}","light_yellow"),colored('         |',"light_green"))
+    print(colored('|   player 2 walls : ',"light_green"),colored(f"{wall_player_2:02}","light_yellow"),colored('         |',"light_green"))
     print(colored(' ————————————————————————————————— ',"light_green"))
 
 
@@ -538,7 +568,7 @@ while is_running:
                     refresh_screen()
                     break
                 else:
-                    print(colored("you used up all of your walls","red"))
+                    print(colored("No walls remaining","red"))
                     command = input(f"Enter move command: ").lower()
                     check_move(turn,command)
 
@@ -549,7 +579,7 @@ while is_running:
                     refresh_screen()
                     break
                 else:
-                    print(colored("you used up all of your walls","red"))
+                    print(colored("No walls remaining","red"))
                     command = input(f"Enter move command: ").lower()
                     check_move(turn,command)
         else:
