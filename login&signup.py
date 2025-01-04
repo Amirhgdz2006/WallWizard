@@ -3,6 +3,7 @@ import re
 import bcrypt
 import uuid
 import os
+import time
 
 def clear():
     os.system('cls||clear')
@@ -44,8 +45,8 @@ def game(users):
 
 
 def new_game(users):
-    username =input("playr2 username: ")
-    password=input("player2 password: ")
+    username =input("player 2 username: ")
+    password=input("player 2 password: ")
 
     if username in users:
         hashed_password = users[username]['password'].encode('utf-8')
@@ -66,10 +67,13 @@ def login(users):
     if username in users:
         hashed_password = users[username]['password'].encode('utf-8')
         if bcrypt.checkpw(password.encode('utf-8'), hashed_password) and users[username]['email'] == email:
-            print("login succsseful\n Enjoy the game")
+            print("login succsseful\nEnjoy the game")
+            time.sleep(1)
+            clear()
             game(users)
         else:
             print("Incorrect email or password")
+            
     else:
         print("your username does not exist\nPleas try again")
 
@@ -82,7 +86,6 @@ def signup(users):
 
     if username in users:
         print("username is already exist\nPlease try again.")
-        return main
     
     if not validate_email(email):
         print("Email is not valid")
@@ -105,7 +108,7 @@ def main():
     
     while True:
         clear()
-        choice = input("pleas select one of the options: 0)EXIT 1)Login 2)Signup ")
+        choice = input("pleas select one of the options:\n0)EXIT \n1)Login \n2)Sign up \n")
         clear()
         if choice == '1':
             clear()
