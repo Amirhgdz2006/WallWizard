@@ -1,5 +1,6 @@
 from termcolor import colored
 import copy
+import time
 import os
                     
 playground = [[" ","|"," ","|"," ","|"," ","|", 2 ,"|"," ","|"," ","|"," ","|"," "],
@@ -48,6 +49,53 @@ row2 , column2 = 0 , 8
 wall_player_1 = 10
 wall_player_2 = 10
     
+def refresh_screen():
+
+    num_bar = [" "," ","1"," ","2"," ","3"," ","4"," ","5"," ","6"," ","7"," ","8"," "]
+
+    playground_copy = copy.deepcopy(playground)
+    count_1 = 0
+    for item in playground_copy:
+        if playground_copy.index(item) % 2 != 0:
+            item.insert(0,str(count_1))
+        else:
+            item.insert(0,' ')
+            count_1 = count_1 + 1
+    
+    playground_copy.insert(0,num_bar)
+     
+    playground_original_copy = copy.deepcopy(playground_original)
+    count_2 = 0
+    for item in playground_original_copy:
+        if playground_original_copy.index(item) % 2 != 0:
+            item.insert(0,str(count_2))
+        else:
+            item.insert(0,' ')
+            count_2 = count_2 + 1
+    
+    playground_original_copy.insert(0,num_bar)
+
+    clear()
+    for row in range(18):
+        for col in range(18):
+            if playground_copy[row][col] == 2 :
+                print(colored(playground_copy[row][col],"red"),end=" ")
+            elif playground_copy[row][col] == 1 :
+                print(colored(playground_copy[row][col],"blue"),end=" ")
+            elif playground_original_copy[row][col] == 0 :
+                print(colored(playground_copy[row][col],"yellow"),end=" ")
+            else:
+                print(colored(playground_copy[row][col],"black"),end=" ")
+        print()
+    print()
+    print(colored(' ————————————————————————————————— ',"light_green"))
+    print(colored('|   Up:u Down:d Left:l Right:r    |',"light_green"))
+    print(colored('|—————————————————————————————————|',"light_green"))
+    print(colored('|   player 1 walls : ',"light_green"),colored(f"{wall_player_1:02}","light_yellow"),colored('         |',"light_green"))
+    print(colored('|   player 2 walls : ',"light_green"),colored(f"{wall_player_2:02}","light_yellow"),colored('         |',"light_green"))
+    print(colored(' ————————————————————————————————— ',"light_green"))
+
+
 def check_move(pawn,command):
     global wall_player_1,wall_player_2
 
@@ -466,13 +514,190 @@ def check_wall(wall_command):
     global wall_player_1,wall_player_2
 
     def place_wall(list_command):
-        playground_original[list_command[0]][list_command[1]] = 0
+        playground_original[list_command[0]][list_command[1]] = 0   
         if list_command[2] == "h":
             playground_original[list_command[0]][list_command[1] - 1] = 0
             playground_original[list_command[0]][list_command[1] + 1] = 0
         elif list_command[2] == "v":
             playground_original[list_command[0] - 1][list_command[1]] = 0
             playground_original[list_command[0] + 1][list_command[1]] = 0
+
+    
+# ----------------------------------------------------------
+        def check_dfs():
+            global row1_copy, row2_copy, column1_copy, column2_copy, dfs, lst_visit_1, lst_visit_2, max_try, try_
+
+            dfs = True
+            row1_copy = row1
+            row2_copy = row2
+            column1_copy = column1
+            column2_copy = column2
+            playground_original_copy_1 = copy.deepcopy(playground_original)
+            playground_original_copy_2 = copy.deepcopy(playground_original)
+            lst_visit_1 = []
+            lst_visit_2 = []
+
+            lst_visit_1.append([row1_copy, column1_copy])
+            lst_visit_2.append([row2_copy, column2_copy])
+            max_try = 10000
+            try_ = 0
+
+            
+            while row1_copy != 0 and dfs == True and try_ < max_try:
+
+                def check_dfs_1():
+                    global row1_copy, column1_copy, dfs, lst_visit_1, try_
+                    try_ += 1
+
+                   
+                    if row1_copy > 0 and playground_original_copy_1[row1_copy - 1][column1_copy] != 0:
+                        if [row1_copy - 2, column1_copy] not in lst_visit_1:
+                            row1_copy -= 2
+                            lst_visit_1.append([row1_copy, column1_copy])
+
+                    
+                    elif column1_copy < 16 and playground_original_copy_1[row1_copy][column1_copy + 1] != 0:
+                        if [row1_copy, column1_copy + 2] not in lst_visit_1:
+                            column1_copy += 2
+                            lst_visit_1.append([row1_copy, column1_copy])
+
+                    
+                    elif column1_copy > 0 and playground_original_copy_1[row1_copy][column1_copy - 1] != 0:
+                        if [row1_copy, column1_copy - 2] not in lst_visit_1:
+                            column1_copy -= 2
+                            lst_visit_1.append([row1_copy, column1_copy])
+
+                    
+                    elif row1_copy < 16 and playground_original_copy_1[row1_copy + 1][column1_copy] != 0:
+                        if [row1_copy + 2, column1_copy] not in lst_visit_1:
+                            row1_copy += 2
+                            lst_visit_1.append([row1_copy, column1_copy])
+
+                    
+                    elif (playground_original_copy_1[row1_copy - 1][column1_copy] == 0 and
+                        playground_original_copy_1[row1_copy][column1_copy + 1] == 0 and
+                        playground_original_copy_1[row1_copy][column1_copy - 1] == 0 and
+                        playground_original_copy_1[row1_copy + 1][column1_copy] == 0):
+                        dfs = False
+
+                    
+                    else:
+                        if len(lst_visit_1) != 0:
+                            playground_original_copy_1[lst_visit_1[-1][0]][lst_visit_1[-1][1]] = 0
+                            lst_visit_1.pop()
+                            if lst_visit_1:
+                                row1_copy, column1_copy = lst_visit_1[-1]
+                            check_dfs_1()
+
+                    if try_ >= 10000:
+                        dfs = False
+
+                check_dfs_1()
+
+            while row2_copy != 16 and dfs == True and try_ < max_try:
+
+                    def check_dfs_2():
+                        global row2_copy, column2_copy, dfs, lst_visit_2, try_
+                        try_ += 1
+
+                    
+                        if row2_copy < 16 and playground_original_copy_2[row2_copy + 1][column2_copy] != 0:
+                            if [row2_copy + 2, column2_copy] not in lst_visit_2:
+                                row2_copy += 2
+                                lst_visit_2.append([row2_copy, column2_copy])
+
+                        
+                        elif column2_copy < 16 and playground_original_copy_2[row2_copy][column2_copy + 1] != 0:
+                            if [row2_copy, column2_copy + 2] not in lst_visit_2:
+                                column2_copy += 2
+                                lst_visit_2.append([row2_copy, column2_copy])
+
+                        
+                        elif column2_copy > 0 and playground_original_copy_2[row2_copy][column2_copy - 1] != 0:
+                            if [row2_copy, column2_copy - 2] not in lst_visit_2:
+                                column2_copy -= 2
+                                lst_visit_2.append([row2_copy, column2_copy])
+
+                        
+                        elif row2_copy > 0 and playground_original_copy_2[row2_copy - 1][column2_copy] != 0:
+                            if [row2_copy - 2, column2_copy] not in lst_visit_2:
+                                row2_copy -= 2
+                                lst_visit_2.append([row2_copy, column2_copy])
+
+                        
+                        elif (playground_original_copy_2[row2_copy + 1][column2_copy] == 0 and
+                            playground_original_copy_2[row2_copy][column2_copy + 1] == 0 and
+                            playground_original_copy_2[row2_copy][column2_copy - 1] == 0 and
+                            playground_original_copy_2[row2_copy - 1][column2_copy] == 0):
+                            dfs = False
+
+                        
+                        else:
+                            if len(lst_visit_2) != 0:
+                                playground_original_copy_2[lst_visit_2[-1][0]][lst_visit_2[-1][1]] = 0
+                                lst_visit_2.pop()
+                                if lst_visit_2:
+                                    row2_copy, column2_copy = lst_visit_2[-1]
+                                check_dfs_2()
+
+                        if try_ >= 10000:
+                            dfs = False
+
+                    check_dfs_2()
+        check_dfs()
+    
+        if dfs == False:
+            
+            playground_original[list_command[0]][list_command[1]] = ' '   
+            if list_command[2] == "h":
+                playground_original[list_command[0]][list_command[1] - 1] = ' '
+                playground_original[list_command[0]][list_command[1] + 1] = ' '
+            elif list_command[2] == "v":
+                playground_original[list_command[0] - 1][list_command[1]] = ' '
+                playground_original[list_command[0] + 1][list_command[1]] = ' '
+
+            print("this wall can't be set here.")
+            time.sleep(1)
+            refresh_screen()
+            print()
+            if turn == 1:
+                print(colored(f"         Player one's turn         ", "blue", "on_light_cyan", attrs=["bold"]))
+            else:
+                print(colored(f"         Player two's turn         ", "white", "on_red", attrs=["bold"]))
+
+            while True:
+                command = input(f"Enter move command: ").lower()
+                if command == "u" or command == "d" or command == "l" or command == "r":
+                    check_move(turn, command)
+                    refresh_screen()
+                    break
+                elif command == "wall":
+                    if turn == 1:
+                        if wall_player_1 > 0:
+                            wall_command = input("Enter wall command ( center row , center column , direction(h/v) ): ").lower()
+                            check_wall(wall_command)
+                            refresh_screen()
+                            break
+                        else:
+                            print(colored("No walls remaining", "red"))
+                            command = input(f"Enter move command: ").lower()
+                            check_move(turn, command)
+
+                    elif turn == 2:
+                        if wall_player_2 > 0:
+                            wall_command = input("Enter wall command ( center row , center column , direction(h/v) ): ").lower()
+                            check_wall(wall_command)
+                            refresh_screen()
+                            break
+                        else:
+                            print(colored("No walls remaining", "red"))
+                            command = input(f"Enter move command: ").lower()
+                            check_move(turn, command)
+                else:
+                    print(colored("Invalid command, please try again", "red"))
+
+# ----------------------------------------------------------
+
 
     if wall_command == "move":
         while True:
@@ -547,53 +772,6 @@ def check_wall(wall_command):
             wall_command = input("Enter wall command ( center row , center column , direction(h/v) ): ").lower()
             check_wall(wall_command)
        
-def refresh_screen():
-
-    num_bar = [" "," ","1"," ","2"," ","3"," ","4"," ","5"," ","6"," ","7"," ","8"," "]
-
-    playground_copy = copy.deepcopy(playground)
-    count_1 = 0
-    for item in playground_copy:
-        if playground_copy.index(item) % 2 != 0:
-            item.insert(0,str(count_1))
-        else:
-            item.insert(0,' ')
-            count_1 = count_1 + 1
-    
-    playground_copy.insert(0,num_bar)
-     
-    playground_original_copy = copy.deepcopy(playground_original)
-    count_2 = 0
-    for item in playground_original_copy:
-        if playground_original_copy.index(item) % 2 != 0:
-            item.insert(0,str(count_2))
-        else:
-            item.insert(0,' ')
-            count_2 = count_2 + 1
-    
-    playground_original_copy.insert(0,num_bar)
-
-    clear()
-    for row in range(18):
-        for col in range(18):
-            if playground_copy[row][col] == 2 :
-                print(colored(playground_copy[row][col],"red"),end=" ")
-            elif playground_copy[row][col] == 1 :
-                print(colored(playground_copy[row][col],"blue"),end=" ")
-            elif playground_original_copy[row][col] == 0 :
-                print(colored(playground_copy[row][col],"yellow"),end=" ")
-            else:
-                print(colored(playground_copy[row][col],"black"),end=" ")
-        print()
-    print()
-    print(colored(' ————————————————————————————————— ',"light_green"))
-    print(colored('|   Up:u Down:d Left:l Right:r    |',"light_green"))
-    print(colored('|—————————————————————————————————|',"light_green"))
-    print(colored('|   player 1 walls : ',"light_green"),colored(f"{wall_player_1:02}","light_yellow"),colored('         |',"light_green"))
-    print(colored('|   player 2 walls : ',"light_green"),colored(f"{wall_player_2:02}","light_yellow"),colored('         |',"light_green"))
-    print(colored(' ————————————————————————————————— ',"light_green"))
-
-
 
 def victory_text(pawn):
     print(colored(' ——————————————————————————————— ',"black","on_yellow"),)
