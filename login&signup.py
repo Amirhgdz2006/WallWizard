@@ -3,7 +3,7 @@ import re
 import bcrypt
 import uuid
 import os
-
+from termcolor import colored
 def clear():
     os.system('cls||clear')
     
@@ -25,78 +25,99 @@ def validate_email(email):
 def game(users):
     
     while True:
-        choice = input("pleas select one of the options:\nA)NEW GAME\nB)Continue previous game\nC)WINNER CHART\nD)GAMES DATA\nF)EXIT\n")
-        
+        choice = input(colored("pleas select one of the options:\nA)NEW GAME\nB)Continue previous game\nC)WINNER CHART\nD)GAMES DATA\nF)EXIT\n"))
+        clear()
         if choice.upper() == 'A':
-          print("Starting a new game...") 
+          print(colored("Starting a new game...","blue")) 
           new_game(users) 
-        elif choice == 'B':
-          print("Continuing previous game...")
-        elif choice == 'C':
-          print("Displaying winner chart...") 
-        elif choice == 'D':
-          print("loading data of the game...")
-        elif choice == 'F':  
-          print("Exiting menu.")  
+        elif choice.upper() == 'B':
+          print(colored("Continuing previous game...","blue"))
+        elif choice.upper() == 'C':
+          print(colored("Displaying winner chart...","blue")) 
+        elif choice.upper() == 'D':
+          print(colored("loading data of the game...","blue"))
+        elif choice.upper() == 'F':  
+          print(colored("Exiting menu.","red"))  
           break
         else:
-            print("Error\nPleas try again.")
+            print(colored("Error\nPleas try again.","red"))
 
 
 def new_game(users):
-    username =input("playr2 username: ")
-    password=input("player2 password: ")
-
+    username =input(colored("playr2 username: ","white","on_dark_grey"))
+    clear()
+    password=input(colored("player2 password: ","white","on_dark_grey"))
+    clear()
     if username in users:
         hashed_password = users[username]['password'].encode('utf-8')
         if bcrypt.checkpw(password.encode('utf-8'), hashed_password) and users[username]:
-            print("ENJOY THE GAME")
+            print(colored("ENJOY THE GAME","light_yellow"))
             
         else:
-            print("Incorrect password")
+            print(colored("Incorrect password","red"))
     else:
-        print("your username does not exist\nPleas try again")     
+        print(colored("your username does not exist\nSIGN UP IF YOU DID NOT\nSIGN UP: ","light_red"))      
+    signup(users)
 
+    
 
 def login(users):
-    username = input("username: ")
-    password = input("password: ")
-    email = input("email: ")
+    username = input(colored("username: ","white","on_dark_grey"))
+    if username=="0":
+        exit()
+    clear()        
+    password = input(colored("password: ","white","on_dark_grey"))
+    if password=="0":
+        exit()
+    clear()    
+    email = input(colored("email: ","white","on_dark_gray"))
+    if email == "0":
+        exit()
+    clear()    
 
     if username in users:
         hashed_password = users[username]['password'].encode('utf-8')
         if bcrypt.checkpw(password.encode('utf-8'), hashed_password) and users[username]['email'] == email:
-            print("login succsseful\n Enjoy the game")
+            print(colored("login succsseful\n Enjoy the game","light_yellow"))
             game(users)
         else:
-            print("Incorrect email or password")
+            print(colored("Incorrect email or password","light_red"))
     else:
-        print("your username does not exist\nPleas try again")
+        print(colored("your username does not exist\nPleas try again","light_red"))
 
 
 
 def signup(users):
-    username = input("username: ")
-    email = input("email: ")
-    password = input("password: ")
+    username = input(colored("username: ","white","on_dark_grey"))
+    if username== "0":
+        exit()
+    clear()    
+    email = input(colored("email: ","white","on_dark_grey0"))
+    if email=="0":
+        exit()
+    clear()    
+    password = input(colored("password: ","white","on_dark_grey"))
+    if password== "0":
+        exit()
+    clear()    
 
     if username in users:
-        print("username is already exist\nPlease try again.")
+        print(colored("username is already exist\nPlease try again.","light_red"))
         return main
     
     if not validate_email(email):
-        print("Email is not valid")
+        print(colored("Email is not valid","light_red"))
         return
 
     for user in users.values():
         if user['email'] == email:
-            print("Email is already exist\nPlease try again.")
+            print(colored("Email is already exist\nPlease try again.","blue"))
             return
     username_id= str(uuid.uuid4())
     hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
     users[username] = {'id':username_id,'email': email, 'password': hashed_password}
     save_users(users)
-    print("Sign Up successful!")
+    print(colored("Sign Up successful!","yellow","on_dark_grey"))
     game(users)
 
 def main():
@@ -104,20 +125,20 @@ def main():
     users = load_users()
     
     while True:
-        clear()
-        choice = input("pleas select one of the options: 0)EXIT 1)Login 2)Signup ")
+        
+        choice = input(colored("pleas select one of the options: 0)EXIT 1)Login 2)Signup ","black","on_dark_grey"))
         clear()
         if choice == '1':
-            clear()
+            
             login(users)
         elif choice == '2':
-            clear()
+            
             signup(users)
         elif choice == '0':
             break
         else:
-            clear()
-            print("Error\nPleas try again.")
+        
+            print(colored("Error\nPleas try again.","red"))
 
 main()
 
