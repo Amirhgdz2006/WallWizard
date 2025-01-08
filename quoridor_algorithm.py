@@ -728,103 +728,159 @@ def check_wall(wall_command):
             max_try = 10000
             try_ = 0
 
-            def check_dfs_1():
-                global row1_copy, column1_copy, dfs, visited1, try_
-                try_ += 1
+            while row1_copy != 0 and dfs == True:
+                def check_dfs_1():
+                    global row1_copy, column1_copy, dfs, visited1, try_ , max_try
+                    try_ += 1
 
-                
-                if row1_copy > 0 and playground_original_copy1[row1_copy - 1][column1_copy] != 0:
-                    if [row1_copy - 2, column1_copy] not in visited1:
-                        row1_copy -= 2
-                        visited1.append([row1_copy, column1_copy])
+                    def up():
+                        global row1_copy, column1_copy, dfs, visited1, try_ , max_try
+                        if  0 < row1_copy <= 16 and playground_original_copy1[row1_copy - 1][column1_copy] != 0:
+                            if [row1_copy - 2, column1_copy] not in visited1:
+                                row1_copy -= 2
+                                visited1.append([row1_copy, column1_copy])
+                            else:
+                                right()
+                        else:
+                            right()
+                    
 
+                    def right():
+                        global row1_copy, column1_copy, dfs, visited1, try_ , max_try
+                        if 0 <= column1_copy < 16 and playground_original_copy1[row1_copy][column1_copy + 1] != 0:
+                            if [row1_copy, column1_copy + 2] not in visited1:
+                                column1_copy += 2
+                                visited1.append([row1_copy, column1_copy])
+                            else:
+                                left()
+                        else:
+                            left()
                 
-                elif column1_copy < 16 and playground_original_copy1[row1_copy][column1_copy + 1] != 0:
-                    if [row1_copy, column1_copy + 2] not in visited1:
-                        column1_copy += 2
-                        visited1.append([row1_copy, column1_copy])
+                    
+                    def left():
+                        global row1_copy, column1_copy, dfs, visited1, try_ , max_try
+                        if 0 < column1_copy <= 16 and playground_original_copy1[row1_copy][column1_copy - 1] != 0:
+                            if [row1_copy, column1_copy - 2] not in visited1:
+                                column1_copy -= 2
+                                visited1.append([row1_copy, column1_copy])
+                            else:
+                                down()
+                        else:
+                            down()
+                    
+                    
+                    def down():
+                        global row1_copy, column1_copy, dfs, visited1, try_ , max_try
+                        if 0 <= row1_copy < 16 and playground_original_copy1[row1_copy + 1][column1_copy] != 0:
+                            if [row1_copy + 2, column1_copy] not in visited1:
+                                row1_copy += 2
+                                visited1.append([row1_copy, column1_copy])
+                            else:
+                                wall()
+                        else:
+                            wall()
 
-                
-                elif column1_copy > 0 and playground_original_copy1[row1_copy][column1_copy - 1] != 0:
-                    if [row1_copy, column1_copy - 2] not in visited1:
-                        column1_copy -= 2
-                        visited1.append([row1_copy, column1_copy])
-
-                
-                elif row1_copy < 16 and playground_original_copy1[row1_copy + 1][column1_copy] != 0:
-                    if [row1_copy + 2, column1_copy] not in visited1:
-                        row1_copy += 2
-                        visited1.append([row1_copy, column1_copy])
-
-                
-                elif (playground_original_copy1[row1_copy - 1][column1_copy] == 0 and
-                    playground_original_copy1[row1_copy][column1_copy + 1] == 0 and
-                    playground_original_copy1[row1_copy][column1_copy - 1] == 0 and
-                    playground_original_copy1[row1_copy + 1][column1_copy] == 0):
-                    dfs = False
-
-                
-                else:
-                    if len(visited1) != 0:
-                        playground_original_copy1[visited1[-1][0]][visited1[-1][1]] = 0
-                        visited1.pop()
-                        if visited1:
+                    
+                    def wall():
+                        global row1_copy, column1_copy, dfs, visited1, try_ , max_try
+                        if playground_original_copy1[row1_copy - 1][column1_copy] == 0 and playground_original_copy1[row1_copy][column1_copy + 1] == 0 and playground_original_copy1[row1_copy][column1_copy - 1] == 0 and playground_original_copy1[row1_copy + 1][column1_copy] == 0:
+                            dfs = False
+                        else:
+                            back_track()
+                    
+                    
+                    def back_track():
+                        global row1_copy, column1_copy, dfs, visited1, try_ , max_try
+                        if len(visited1) != 0:
+                            playground_original_copy1[visited1[-1][0]][visited1[-1][1]] = 0
+                            visited1.pop()
                             row1_copy, column1_copy = visited1[-1]
-                        check_dfs_1()
+                            check_dfs_1()
 
-                if try_ >= 10000:
-                    dfs = False
-            
-            def check_dfs_2():
-                global row2_copy, column2_copy, dfs, visited2, try_
-                try_ += 1
+                    up()
+                    
+                    if try_ >= max_try:
+                        dfs = False
 
-                if row2_copy < 16 and playground_original_copy2[row2_copy + 1][column2_copy] != 0:
-                    if [row2_copy + 2, column2_copy] not in visited2:
-                        row2_copy += 2
-                        visited2.append([row2_copy, column2_copy])
 
-                
-                elif column2_copy < 16 and playground_original_copy2[row2_copy][column2_copy + 1] != 0:
-                    if [row2_copy, column2_copy + 2] not in visited2:
-                        column2_copy += 2
-                        visited2.append([row2_copy, column2_copy])
-
-                
-                elif column2_copy > 0 and playground_original_copy2[row2_copy][column2_copy - 1] != 0:
-                    if [row2_copy, column2_copy - 2] not in visited2:
-                        column2_copy -= 2
-                        visited2.append([row2_copy, column2_copy])
-
-                
-                elif row2_copy > 0 and playground_original_copy2[row2_copy - 1][column2_copy] != 0:
-                    if [row2_copy - 2, column2_copy] not in visited2:
-                        row2_copy -= 2
-                        visited2.append([row2_copy, column2_copy])
-
-                
-                elif (playground_original_copy2[row2_copy + 1][column2_copy] == 0 and
-                    playground_original_copy2[row2_copy][column2_copy + 1] == 0 and
-                    playground_original_copy2[row2_copy][column2_copy - 1] == 0 and
-                    playground_original_copy2[row2_copy - 1][column2_copy] == 0):
-                    dfs = False
-
-                
-                else:
-                    if len(visited2) != 0:
-                        playground_original_copy2[visited2[-1][0]][visited2[-1][1]] = 0
-                        visited2.pop()
-                        if visited2:
-                            row2_copy, column2_copy = visited2[-1]
-                        check_dfs_2()
-
-                if try_ >= 10000:
-                    dfs = False
-            
-            while row1_copy != 0 and dfs == True and try_ < max_try:
                 check_dfs_1()
+                    
+            while row2_copy != 16 and dfs == True:
+                def check_dfs_2():
+                    global row2_copy, column2_copy, dfs, visited2, try_ , max_try
+                    try_ += 1
 
-            while row2_copy != 16 and dfs == True and try_ < max_try:
+
+                    def down():
+                        global row2_copy, column2_copy, dfs, visited2, try_ , max_try
+                        if 0 <= row2_copy < 16 and playground_original_copy2[row2_copy + 1][column2_copy] != 0:
+                            if [row2_copy + 2, column2_copy] not in visited2:
+                                row2_copy += 2
+                                visited2.append([row2_copy, column2_copy])
+                            else:
+                                right()
+                        else:
+                            right()
+
+                    
+                    def right():
+                        global row2_copy, column2_copy, dfs, visited2, try_ , max_try
+                        if 0 <= column2_copy < 16 and playground_original_copy2[row2_copy][column2_copy + 1] != 0:
+                            if [row2_copy, column2_copy + 2] not in visited2:
+                                column2_copy += 2
+                                visited2.append([row2_copy, column2_copy])
+                            else:
+                                left()
+                        else:
+                            left()
+                    
+                    
+                    def left():
+                        global row2_copy, column2_copy, dfs, visited2, try_ , max_try
+                        if 0 < column2_copy <= 16 and playground_original_copy2[row2_copy][column2_copy - 1] != 0:
+                            if [row2_copy, column2_copy - 2] not in visited2:
+                                column2_copy -= 2
+                                visited2.append([row2_copy, column2_copy])
+                            else:
+                                up()
+                        else:
+                            up()
+                    
+                    
+                    def up():
+                        global row2_copy, column2_copy, dfs, visited2, try_ , max_try
+                        if  0 < row2_copy <= 16 and playground_original_copy2[row2_copy - 1][column2_copy] != 0:
+                            if [row2_copy - 2, column2_copy] not in visited2:
+                                row2_copy -= 2
+                                visited2.append([row2_copy, column2_copy])
+                            else:
+                                wall()
+                        else:
+                            wall()
+                    
+
+                    def wall():
+                        global row2_copy, column2_copy, dfs, visited2, try_ , max_try
+                        if playground_original_copy2[row2_copy - 1][column2_copy] == 0 and playground_original_copy2[row2_copy][column2_copy + 1] == 0 and playground_original_copy2[row2_copy][column2_copy - 1] == 0 and playground_original_copy2[row2_copy + 1][column2_copy] == 0:
+                            dfs = False
+                        else:
+                            back_track()
+                    
+                    
+                    def back_track():
+                        global row2_copy, column2_copy, dfs, visited2, try_ , max_try
+                        if len(visited2) != 0:
+                            playground_original_copy2[visited2[-1][0]][visited2[-1][1]] = 0
+                            visited2.pop()
+                            row2_copy, column2_copy = visited2[-1]
+                            check_dfs_2()
+
+                    down()
+                    
+                    if try_ >= max_try:
+                        dfs = False
+
+
                 check_dfs_2()
         check_dfs()
     
