@@ -1,7 +1,7 @@
 import subprocess
 import sys
 
-required_modules = ["playsound", "pygame", "termcolor"]
+required_modules = ["pygame", "termcolor"]
 
 for module in required_modules:
     try:
@@ -100,7 +100,7 @@ def refresh_screen():
             count_2 = count_2 + 1
     
     playground_original_copy.insert(0,num_bar)
-
+    sound('sounds/sound.mp3')
     clear()
     for row in range(18):
         for col in range(18):
@@ -166,7 +166,7 @@ def check_move(pawn,command):
                             row1 -= 4
                             playground[row1][column1] = 1
                             playground_original[row1][column1] = 1
-                            sound('sounds/sound.mp3')
+                            
                             
                     else:
                         print(colored("Invalid move, please try again","red"))
@@ -187,7 +187,7 @@ def check_move(pawn,command):
                     row1 -= 2
                     playground[row1][column1] = 1
                     playground_original[row1][column1] = 1
-                    sound('sounds/sound.mp3')
+                    
 
                     
             else:
@@ -240,7 +240,7 @@ def check_move(pawn,command):
                             row2 -= 4
                             playground[row2][column2] = 2
                             playground_original[row2][column2] = 2
-                            sound('sounds/sound.mp3')
+                           
                     else:
                         print(colored("Invalid move, please try again","red"))
                         while True:
@@ -260,7 +260,7 @@ def check_move(pawn,command):
                     row2 -= 2
                     playground[row2][column2] = 2
                     playground_original[row2][column2] = 2
-                    sound('sounds/sound.mp3')
+                   
 
                     
                     
@@ -317,7 +317,7 @@ def check_move(pawn,command):
                             row1 += 4
                             playground[row1][column1] = 1
                             playground_original[row1][column1] = 1
-                            sound('sounds/sound.mp3')
+                            
                     else:
                         print(colored("Invalid move, please try again","red"))
                         while True:
@@ -337,7 +337,7 @@ def check_move(pawn,command):
                     row1 += 2
                     playground[row1][column1] = 1
                     playground_original[row1][column1] = 1
-                    sound('sounds/sound.mp3')
+                    
             else:
                 print(colored("Invalid move, please  try again","red"))
                 while True:
@@ -388,7 +388,7 @@ def check_move(pawn,command):
                             row2 += 4
                             playground[row2][column2] = 2
                             playground_original[row2][column2] = 2
-                            sound('sounds/sound.mp3')
+                            
                     else:
                         print(colored("Invalid move, please try again","red"))
                         while True:
@@ -408,7 +408,7 @@ def check_move(pawn,command):
                     row2 += 2
                     playground[row2][column2] = 2
                     playground_original[row2][column2] = 2
-                    sound('sounds/sound.mp3')
+                    
             else:
                 print(colored("Invalid move, please  try again","red"))
                 while True:
@@ -462,7 +462,7 @@ def check_move(pawn,command):
                             column1 += 4
                             playground[row1][column1] = 1
                             playground_original[row1][column1] = 1
-                            sound('sounds/sound.mp3')
+                            
                     else:
                         print(colored("Invalid move, please try again","red"))
                         while True:
@@ -482,7 +482,7 @@ def check_move(pawn,command):
                     column1 += 2
                     playground[row1][column1] = 1
                     playground_original[row1][column1] = 1
-                    sound('sounds/sound.mp3')
+                    
             else:
                 print(colored("Invalid move, please  try again","red"))
                 while True:
@@ -534,7 +534,7 @@ def check_move(pawn,command):
                             column2 += 4
                             playground[row2][column2] = 2
                             playground_original[row2][column2] = 2
-                            sound('sounds/sound.mp3')
+                            
                     else:
                         print(colored("Invalid move, please try again","red"))
                         while True:
@@ -555,7 +555,7 @@ def check_move(pawn,command):
                     column2 += 2
                     playground[row2][column2] = 2
                     playground_original[row2][column2] = 2
-                    sound('sounds/sound.mp3')
+                    
             else:
                 print(colored("Invalid move, please  try again","red"))
                 while True:
@@ -609,7 +609,7 @@ def check_move(pawn,command):
                             column1 -= 4
                             playground[row1][column1] = 1
                             playground_original[row1][column1] = 1
-                            sound('sounds/sound.mp3')
+                            
                     else:
                         print(colored("Invalid move, please try again","red"))
                         while True:
@@ -629,7 +629,7 @@ def check_move(pawn,command):
                     column1 -= 2
                     playground[row1][column1] = 1
                     playground_original[row1][column1] = 1
-                    sound('sounds/sound.mp3')
+                    
             else:
                 print(colored("Invalid move, please  try again","red"))
                 while True:
@@ -681,7 +681,7 @@ def check_move(pawn,command):
                             column2 -= 4
                             playground[row2][column2] = 2
                             playground_original[row2][column2] = 2
-                            sound('sounds/sound.mp3')
+                            
                     else:
                         print(colored("Invalid move, please try again","red"))
                         while True:
@@ -701,7 +701,7 @@ def check_move(pawn,command):
                     column2 -= 2
                     playground[row2][column2] = 2
                     playground_original[row2][column2] = 2
-                    sound('sounds/sound.mp3')
+                    
             else:
                 print(colored("Invalid move, please  try again","red"))
                 while True:
