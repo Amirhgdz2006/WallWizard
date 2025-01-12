@@ -4,6 +4,9 @@ import bcrypt
 import uuid
 import os
 from termcolor import colored
+import time
+
+
 def clear():
     os.system('cls||clear')
     
@@ -48,6 +51,10 @@ def new_game(users):
     clear()
     password=input(colored("player2 password: ","white","on_dark_grey"))
     clear()
+
+    username =input("player 2 username: ")
+    password=input("player 2 password: ")
+
     if username in users:
         hashed_password = users[username]['password'].encode('utf-8')
         if bcrypt.checkpw(password.encode('utf-8'), hashed_password) and users[username]:
@@ -82,6 +89,10 @@ def login(users):
             game(users)
         else:
             print(colored("Incorrect email or password","light_red"))
+            time.sleep(1)
+            clear()
+            game(users)
+            
     else:
         print(colored("your username does not exist\nPleas try again","light_red"))
 
@@ -102,6 +113,7 @@ def signup(users):
     clear()    
 
     if username in users:
+
         print(colored("username is already exist\nPlease try again.","light_red"))
         return main
     
@@ -125,7 +137,8 @@ def main():
     users = load_users()
     
     while True:
-        
+        clear()
+
         choice = input(colored("pleas select one of the options: 0)EXIT 1)Login 2)Signup ","black","on_dark_grey"))
         clear()
         if choice == '1':
@@ -141,4 +154,6 @@ def main():
             print(colored("Error\nPleas try again.","red"))
 
 main()
+
+
 

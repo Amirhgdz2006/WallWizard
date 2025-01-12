@@ -69,11 +69,18 @@ def check_move(pawn,command):
                         print(colored("Invalid command, please  try again","red"))
                 
             elif 0 <= row1 - 2 <= 16 :
-                playground[row1][column1] = " "
-                playground_original[row1][column1] = " "
-                row1 -= 2
-                playground[row1][column1] = 1
-                playground_original[row1][column1] = 1
+                if row2 + 2 == row1 and column2  == column1:
+                    playground[row1][column1] = " "
+                    playground_original[row1][column1] = " "
+                    row1 -= 4
+                    playground[row1][column1] = 1
+                    playground_original[row1][column1] = 1
+                else:
+                    playground[row1][column1] = " "
+                    playground_original[row1][column1] = " "
+                    row1 -= 2
+                    playground[row1][column1] = 1
+                    playground_original[row1][column1] = 1
             else:
                 print(colored("Invalid move, please  try again","red"))
                 while True:
@@ -103,11 +110,18 @@ def check_move(pawn,command):
                     else:
                         print(colored("Invalid command, please  try again","red"))
             elif 0 <= row2 - 2 <= 16 :
-                playground[row2][column2] = " "
-                playground_original[row1][column1] = " "
-                row2 -= 2
-                playground[row2][column2] = 2
-                playground_original[row1][column1] = 2
+                if row1 + 2 == row2 and column2  == column1:
+                    playground[row2][column2] = " "
+                    playground_original[row2][column2] = " "
+                    row2 -= 4
+                    playground[row2][column2] = 2
+                    playground_original[row2][column2] = 2
+                else:
+                    playground[row2][column2] = " "
+                    playground_original[row2][column2] = " "
+                    row2 -= 2
+                    playground[row2][column2] = 2
+                    playground_original[row2][column2] = 2
             else:
                 print(colored("Invalid move, please  try again","red"))
                 while True:
@@ -141,11 +155,18 @@ def check_move(pawn,command):
                         else:
                             print(colored("Invalid command, please  try again","red"))
                 elif 0 <= row1 + 2 <= 16 :
-                    playground[row1][column1] = " "
-                    playground_original[row1][column1] = " "
-                    row1 += 2
-                    playground[row1][column1] = 1
-                    playground_original[row1][column1] = 1
+                    if row1 + 2 == row2 and column2  == column1:
+                        playground[row1][column1] = " "
+                        playground_original[row1][column1] = " "
+                        row1 += 4
+                        playground[row1][column1] = 1
+                        playground_original[row1][column1] = 1
+                    else:
+                        playground[row1][column1] = " "
+                        playground_original[row1][column1] = " "
+                        row1 += 2
+                        playground[row1][column1] = 1
+                        playground_original[row1][column1] = 1
                 else:
                     print(colored("Invalid move, please  try again","red"))
                     while True:
@@ -188,11 +209,18 @@ def check_move(pawn,command):
                     else:
                         print(colored("Invalid command, please  try again","red"))
             elif 0 <= row2 + 2 <= 16 :
-                playground[row2][column2] = " "
-                playground_original[row1][column1] = " "
-                row2 += 2
-                playground[row2][column2] = 2
-                playground_original[row1][column1] = 2
+                if row2 + 2 == row1 and column2  == column1:
+                    playground[row2][column2] = " "
+                    playground_original[row2][column2] = " "
+                    row2 += 4
+                    playground[row2][column2] = 2
+                    playground_original[row2][column2] = 2
+                else:
+                    playground[row2][column2] = " "
+                    playground_original[row2][column2] = " "
+                    row2 += 2
+                    playground[row2][column2] = 2
+                    playground_original[row2][column2] = 2
             else:
                 print(colored("Invalid move, please  try again","red"))
                 while True:
@@ -226,11 +254,18 @@ def check_move(pawn,command):
                         else:
                             print(colored("Invalid command, please  try again","red"))
                 elif 0 <= column1 + 2 <= 16 :
-                    playground[row1][column1] = " "
-                    playground_original[row1][column1] = " "
-                    column1 += 2
-                    playground[row1][column1] = 1
-                    playground_original[row1][column1] = 1
+                    if column2  == column1 + 2 and row1 == row2:
+                        playground[row1][column1] = " "
+                        playground_original[row1][column1] = " "
+                        column1 += 4
+                        playground[row1][column1] = 1
+                        playground_original[row1][column1] = 1
+                    else:
+                        playground[row1][column1] = " "
+                        playground_original[row1][column1] = " "
+                        column1 += 2
+                        playground[row1][column1] = 1
+                        playground_original[row1][column1] = 1
                 else:
                     print(colored("Invalid move, please  try again","red"))
                     while True:
@@ -273,11 +308,18 @@ def check_move(pawn,command):
                         else:
                             print(colored("Invalid command, please  try again","red"))
                 elif 0 <= column2 + 2 <= 16 :
-                    playground[row2][column2] = " "
-                    playground_original[row1][column1] = " "
-                    column2 += 2
-                    playground[row2][column2] = 2
-                    playground_original[row1][column1] = 2
+                    if column2 + 2 == column1 and row1 == row2:
+                        playground[row2][column2] = " "
+                        playground_original[row2][column2] = " "
+                        column2 += 4
+                        playground[row2][column2] = 2
+                        playground_original[row2][column2] = 2
+                    else:
+                        playground[row2][column2] = " "
+                        playground_original[row2][column2] = " "
+                        column2 += 2
+                        playground[row2][column2] = 2
+                        playground_original[row2][column2] = 2
                 else:
                     print(colored("Invalid move, please  try again","red"))
                     while True:
@@ -323,11 +365,18 @@ def check_move(pawn,command):
                     else:
                         print(colored("Invalid command, please  try again","red"))
             elif 0 <= column1 - 2 <= 16  :
-                playground[row1][column1] = " "
-                playground_original[row1][column1] = " "
-                column1 -= 2
-                playground[row1][column1] = 1
-                playground_original[row1][column1] = 1
+                if column2 + 2 == column1 and row1 == row2:
+                    playground[row1][column1] = " "
+                    playground_original[row1][column1] = " "
+                    column1 -= 4
+                    playground[row1][column1] = 1
+                    playground_original[row1][column1] = 1
+                else:
+                    playground[row1][column1] = " "
+                    playground_original[row1][column1] = " "
+                    column1 -= 2
+                    playground[row1][column1] = 1
+                    playground_original[row1][column1] = 1
             else:
                 print(colored("Invalid move, please  try again","red"))
                 while True:
@@ -356,11 +405,18 @@ def check_move(pawn,command):
                     else:
                         print(colored("Invalid command, please  try again","red"))
             elif 0 <= column2 - 2 <= 16 :
-                playground[row2][column2] = " "
-                playground_original[row1][column1] = " "
-                column2 -= 2
-                playground[row2][column2] = 2
-                playground_original[row1][column1] = 2
+                if column1 + 2 == column2 and row1 == row2:
+                    playground[row2][column2] = " "
+                    playground_original[row2][column2] = " "
+                    column2 -= 4
+                    playground[row2][column2] = 2
+                    playground_original[row2][column2] = 2
+                else:
+                    playground[row2][column2] = " "
+                    playground_original[row2][column2] = " "
+                    column2 -= 2
+                    playground[row2][column2] = 2
+                    playground_original[row2][column2] = 2
             else:
                 print(colored("Invalid move, please  try again","red"))
                 while True:
