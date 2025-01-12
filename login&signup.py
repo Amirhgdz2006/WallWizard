@@ -5,6 +5,7 @@ import uuid
 import os
 from termcolor import colored
 import time
+import quoridor_algorithm
 
 def clear():
     os.system('cls||clear')
@@ -25,26 +26,29 @@ def validate_email(email):
     return re.match(regex, email) is not None
    
 def game(users):
-    
-    while True:
+    playing = True
+    while playing:
         choice = input(colored("pleas select one of the options:\n\nA) NEW GAME\n\nB) Continue previous game\n\nC) WINNER CHART\n\nD) GAMES DATA\n\nF) EXIT\n\n","black"))
         clear()
         if choice.upper() == 'A':
-          print(colored("Starting a new game...","blue")) 
-          new_game(users) 
+            print(colored("Starting a new game...","blue")) 
+            new_game(users)
+            quoridor_algorithm.run_game()
+            exit()
+
         elif choice.upper() == 'B':
-          print(colored("Continuing previous game...\n","blue"))
+            print(colored("Continuing previous game...\n","blue"))
           
         elif choice.upper() == 'C':
-          print(colored("Displaying winner chart...\n","blue"))
+            print(colored("Displaying winner chart...\n","blue"))
           
         elif choice.upper() == 'D':
-          print(colored("loading data of the game...\n","blue"))
+            print(colored("loading data of the game...\n","blue"))
           
         elif choice.upper() == 'F':  
-          print(colored("Exiting menu.","red"))  
-          exit()
-          clear()
+            print(colored("Exiting menu.","red"))  
+            exit()
+            clear()
         else:
             print(colored("Error\nPleas try again.\n","red"))
 

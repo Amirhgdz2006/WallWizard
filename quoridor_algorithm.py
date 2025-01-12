@@ -1154,5 +1154,5 @@ def run_game():
             victory_text(2)
             is_running = False
             sound('sounds/tadaa.mp3')
-
-run_game()
+if __name__ == "__main__":
+    run_game()
