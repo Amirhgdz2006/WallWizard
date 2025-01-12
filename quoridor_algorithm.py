@@ -100,7 +100,6 @@ def refresh_screen():
             count_2 = count_2 + 1
     
     playground_original_copy.insert(0,num_bar)
-    sound('sounds/sound.mp3')
     clear()
     for row in range(18):
         for col in range(18):
@@ -122,6 +121,8 @@ def refresh_screen():
     print(colored('|   player 1 walls : ',"light_green"),colored(f"{wall_player_1:02}","light_yellow"),colored('         |',"light_green"))
     print(colored('|   player 2 walls : ',"light_green"),colored(f"{wall_player_2:02}","light_yellow"),colored('         |',"light_green"))
     print(colored(' ————————————————————————————————— ',"light_green"))
+    sound('sounds/sound.mp3')
+
 
 
 def check_move(pawn,command):
@@ -141,6 +142,8 @@ def check_move(pawn,command):
                         wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
                         check_wall(wall_command)
                         break
+                    elif command == "save" :
+                        save()
                     else:
                         print(colored("Invalid command, please  try again","red"))
                 
@@ -158,6 +161,8 @@ def check_move(pawn,command):
                                     wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
                                     check_wall(wall_command)
                                     break
+                                elif command == "save" :
+                                    save()
                                 else:
                                     print(colored("Invalid command, please  try again","red"))
                         else:    
@@ -179,6 +184,8 @@ def check_move(pawn,command):
                                 wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
                                 check_wall(wall_command)
                                 break
+                            elif command == "save" :
+                                save()
                             else:
                                 print(colored("Invalid command, please  try again","red"))
                 else:
@@ -201,6 +208,8 @@ def check_move(pawn,command):
                         wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
                         check_wall(wall_command)
                         break
+                    elif command == "save" :
+                        save()
                     else:
                         print(colored("Invalid command, please  try again","red"))
 
@@ -216,6 +225,8 @@ def check_move(pawn,command):
                         wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
                         check_wall(wall_command)
                         break
+                    elif command == "save" :
+                        save()
                     else:
                         print(colored("Invalid command, please  try again","red"))
             elif 0 <= row2 - 2 <= 16 :
@@ -232,6 +243,8 @@ def check_move(pawn,command):
                                     wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
                                     check_wall(wall_command)
                                     break
+                                elif command == "save" :
+                                    save()
                                 else:
                                     print(colored("Invalid command, please  try again","red"))
                         else:    
@@ -252,6 +265,8 @@ def check_move(pawn,command):
                                 wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
                                 check_wall(wall_command)
                                 break
+                            elif command == "save" :
+                                save()
                             else:
                                 print(colored("Invalid command, please  try again","red"))
                 else:
@@ -275,6 +290,8 @@ def check_move(pawn,command):
                         wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
                         check_wall(wall_command)
                         break
+                    elif command == "save" :
+                        save()
                     else:
                         print(colored("Invalid command, please  try again","red"))
 
@@ -292,6 +309,8 @@ def check_move(pawn,command):
                         wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
                         check_wall(wall_command)
                         break
+                    elif command == "save" :
+                        save()
                     else:
                         print(colored("Invalid command, please  try again","red"))
                 
@@ -309,6 +328,8 @@ def check_move(pawn,command):
                                     wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
                                     check_wall(wall_command)
                                     break
+                                elif command == "save" :
+                                    save()
                                 else:
                                     print(colored("Invalid command, please  try again","red"))
                         else:    
@@ -329,6 +350,8 @@ def check_move(pawn,command):
                                 wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
                                 check_wall(wall_command)
                                 break
+                            elif command == "save" :
+                                save()
                             else:
                                 print(colored("Invalid command, please  try again","red"))
                 else:
@@ -349,6 +372,8 @@ def check_move(pawn,command):
                         wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
                         check_wall(wall_command)
                         break
+                    elif command == "save" :
+                        save()
                     else:
                         print(colored("Invalid command, please  try again","red"))
 
@@ -364,6 +389,8 @@ def check_move(pawn,command):
                         wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
                         check_wall(wall_command)
                         break
+                    elif command == "save" :
+                        save()
                     else:
                         print(colored("Invalid command, please  try again","red"))
             elif 0 <= row2 + 2 <= 16 :
@@ -380,6 +407,8 @@ def check_move(pawn,command):
                                     wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
                                     check_wall(wall_command)
                                     break
+                                elif command == "save" :
+                                    save()
                                 else:
                                     print(colored("Invalid command, please  try again","red"))
                         else:    
@@ -400,6 +429,8 @@ def check_move(pawn,command):
                                 wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
                                 check_wall(wall_command)
                                 break
+                            elif command == "save" :
+                                save()
                             else:
                                 print(colored("Invalid command, please  try again","red"))
                 else:
@@ -420,6 +451,8 @@ def check_move(pawn,command):
                         wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
                         check_wall(wall_command)
                         break
+                    elif command == "save" :
+                        save()
                     else:
                         print(colored("Invalid command, please  try again","red"))
 
@@ -437,6 +470,8 @@ def check_move(pawn,command):
                         wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
                         check_wall(wall_command)
                         break
+                    elif command == "save" :
+                        save()
                     else:
                         print(colored("Invalid command, please  try again","red"))
                 
@@ -454,6 +489,8 @@ def check_move(pawn,command):
                                     wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
                                     check_wall(wall_command)
                                     break
+                                elif command == "save" :
+                                    save()
                                 else:
                                     print(colored("Invalid command, please  try again","red"))
                         else:    
@@ -474,6 +511,8 @@ def check_move(pawn,command):
                                 wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
                                 check_wall(wall_command)
                                 break
+                            elif command == "save" :
+                                save()
                             else:
                                 print(colored("Invalid command, please  try again","red"))
                 else:
@@ -494,6 +533,8 @@ def check_move(pawn,command):
                         wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
                         check_wall(wall_command)
                         break
+                    elif command == "save" :
+                        save()
                     else:
                         print(colored("Invalid command, please  try again","red"))
 
@@ -509,6 +550,8 @@ def check_move(pawn,command):
                         wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
                         check_wall(wall_command)
                         break
+                    elif command == "save" :
+                        save()
                     else:
                         print(colored("Invalid command, please  try again","red"))
                 
@@ -526,6 +569,8 @@ def check_move(pawn,command):
                                     wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
                                     check_wall(wall_command)
                                     break
+                                elif command == "save" :
+                                    save()
                                 else:
                                     print(colored("Invalid command, please  try again","red"))
                         else:    
@@ -546,6 +591,8 @@ def check_move(pawn,command):
                                 wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
                                 check_wall(wall_command)
                                 break
+                            elif command == "save" :
+                                save()
                             else:
                                 print(colored("Invalid command, please  try again","red"))
                         
@@ -567,6 +614,8 @@ def check_move(pawn,command):
                         wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
                         check_wall(wall_command)
                         break
+                    elif command == "save" :
+                        save()
                     else:
                         print(colored("Invalid command, please  try again","red"))
 
@@ -584,6 +633,8 @@ def check_move(pawn,command):
                         wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
                         check_wall(wall_command)
                         break
+                    elif command == "save" :
+                        save()
                     else:
                         print(colored("Invalid command, please  try again","red"))
                 
@@ -601,6 +652,8 @@ def check_move(pawn,command):
                                     wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
                                     check_wall(wall_command)
                                     break
+                                elif command == "save" :
+                                    save()
                                 else:
                                     print(colored("Invalid command, please  try again","red"))
                         else:    
@@ -621,6 +674,8 @@ def check_move(pawn,command):
                                 wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
                                 check_wall(wall_command)
                                 break
+                            elif command == "save" :
+                                save()
                             else:
                                 print(colored("Invalid command, please  try again","red"))
                 else:
@@ -641,6 +696,8 @@ def check_move(pawn,command):
                         wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
                         check_wall(wall_command)
                         break
+                    elif command == "save" :
+                        save()
                     else:
                         print(colored("Invalid command, please  try again","red"))
 
@@ -656,6 +713,8 @@ def check_move(pawn,command):
                         wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
                         check_wall(wall_command)
                         break
+                    elif command == "save" :
+                        save()
                     else:
                         print(colored("Invalid command, please  try again","red"))
                 
@@ -673,6 +732,8 @@ def check_move(pawn,command):
                                     wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
                                     check_wall(wall_command)
                                     break
+                                elif command == "save" :
+                                    save()
                                 else:
                                     print(colored("Invalid command, please  try again","red"))
                         else:    
@@ -693,6 +754,8 @@ def check_move(pawn,command):
                                 wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
                                 check_wall(wall_command)
                                 break
+                            elif command == "save" :
+                                save()
                             else:
                                 print(colored("Invalid command, please  try again","red"))
                 else:
@@ -713,6 +776,8 @@ def check_move(pawn,command):
                         wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
                         check_wall(wall_command)
                         break
+                    elif command == "save" :
+                        save()
                     else:
                         print(colored("Invalid command, please  try again","red"))
 
@@ -976,6 +1041,8 @@ def check_wall(wall_command):
                         print(colored("No walls remaining","red"))
                         command = input(f"Enter move command: ").lower()
                         check_move(turn,command)
+            elif command == "save" :
+                save()
             else:
                 print(colored("Invalid command, please  try again","red"))
     else:
@@ -1026,59 +1093,66 @@ def victory_text(pawn):
     print(colored(f'|        Player {pawn} wins !        |',"black","on_yellow"))
     print(colored(' ——————————————————————————————— ',"black","on_yellow"))
 
-refresh_screen()
-turn = 1
-is_running = True
-while is_running:
-    print()
-    if turn == 1:
-        print(colored(f"         Player one's turn         ", "blue" , "on_light_cyan" , attrs = ["bold"]))
-    else :
-        print(colored(f"         Player two's turn         ", "white" , "on_red" , attrs = ["bold"]))
-
-    while True:
-        command = input(f"Enter move command: ").lower()
-        if command == "u" or command == "d" or command == "l" or command == "r" :
-            check_move(turn,command)
-            refresh_screen()
-            break
-        elif command == "wall":
-            if turn == 1:
-                if wall_player_1 > 0:
-                    wall_command = input("Enter wall command ( center row , center column , direction(h/v) ): ").lower()
-                    check_wall(wall_command)
-                    refresh_screen()
-                    break
-                else:
-                    print(colored("No walls remaining","red"))
-                    command = input(f"Enter move command: ").lower()
-                    check_move(turn,command)
-
-            elif turn == 2:
-                if wall_player_2 > 0:
-                    wall_command = input("Enter wall command ( center row , center column , direction(h/v) ): ").lower()
-                    check_wall(wall_command)
-                    refresh_screen()
-                    break
-                else:
-                    print(colored("No walls remaining","red"))
-                    command = input(f"Enter move command: ").lower()
-                    check_move(turn,command)
-        else:
-            print(colored("Invalid command, please  try again","red"))
-    if turn == 1 :
-        turn = 2
-    else :
-        turn = 1
-    if row1 == 0 :
-        victory_text(1)
+def run_game():
+    global turn , is_running
+    def save():
         is_running = False
-        sound('sounds/tadaa.mp3')
+        clear()
+        exit()
+    refresh_screen()
+    turn = 1
+    is_running = True
+    while is_running:
+        print()
+        if turn == 1:
+            print(colored(f"         Player one's turn         ", "blue" , "on_light_cyan" , attrs = ["bold"]))
+        else :
+            print(colored(f"         Player two's turn         ", "white" , "on_red" , attrs = ["bold"]))
 
-    elif row2 == 16 :
-        victory_text(2)
-        is_running = False
-        sound('sounds/tadaa.mp3')
+        while True:
+            command = input(f"Enter move command: ").lower()
+            if command == "u" or command == "d" or command == "l" or command == "r" :
+                check_move(turn,command)
+                refresh_screen()
+                break
+            elif command == "wall":
+                if turn == 1:
+                    if wall_player_1 > 0:
+                        wall_command = input("Enter wall command ( center row , center column , direction(h/v) ): ").lower()
+                        check_wall(wall_command)
+                        refresh_screen()
+                        break
+                    else:
+                        print(colored("No walls remaining","red"))
+                        command = input(f"Enter move command: ").lower()
+                        check_move(turn,command)
 
+                elif turn == 2:
+                    if wall_player_2 > 0:
+                        wall_command = input("Enter wall command ( center row , center column , direction(h/v) ): ").lower()
+                        check_wall(wall_command)
+                        refresh_screen()
+                        break
+                    else:
+                        print(colored("No walls remaining","red"))
+                        command = input(f"Enter move command: ").lower()
+                        check_move(turn,command)
+            elif command == "save" :
+                save()
+            else:
+                print(colored("Invalid command, please  try again","red"))
+        if turn == 1 :
+            turn = 2
+        else :
+            turn = 1
+        if row1 == 0 :
+            victory_text(1)
+            is_running = False
+            sound('sounds/tadaa.mp3')
 
-        
+        elif row2 == 16 :
+            victory_text(2)
+            is_running = False
+            sound('sounds/tadaa.mp3')
+
+run_game()
