@@ -1,5 +1,9 @@
 import subprocess
 import sys
+from termcolor import colored
+import pygame
+import copy
+import os
 
 required_modules = ["pygame", "termcolor"]
 
@@ -9,12 +13,6 @@ for module in required_modules:
     except ImportError:
         print(f"installing : {module} \n")
         subprocess.check_call([sys.executable, "-m", "pip", "install", module])
-
-
-from termcolor import colored
-import pygame
-import copy
-import os
                     
 playground = [[" ","|"," ","|"," ","|"," ","|", 2 ,"|"," ","|"," ","|"," ","|"," "],
               ["—","+","—","+","—","+","—","+","—","+","—","+","—","+","—","+","—"],
