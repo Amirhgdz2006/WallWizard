@@ -1,12 +1,5 @@
 import subprocess
 import sys
-import json
-import os
-from termcolor import colored
-import pygame
-import copy
-import os
-import login_signup
 
 required_modules = ["pygame", "termcolor"]
 
@@ -17,7 +10,13 @@ for module in required_modules:
         print(f"installing : {module} \n")
         subprocess.check_call([sys.executable, "-m", "pip", "install", module])
 
-
+import json
+import os
+from termcolor import colored
+import pygame
+import copy
+import os
+import login_signup
 # ----------------------------------- data
 def game(player1: str, player2: str, place1: list, place2: list, walls: list, turn: int, result: bool, game_ID: str):
     new_game_data = {
