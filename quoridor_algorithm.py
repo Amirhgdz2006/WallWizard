@@ -31,6 +31,15 @@ def game(player1: str, player2: str, place1: list, place2: list, walls: list, tu
             "result": result
         }
     }
+    if not os.path.exists('game_info.json'):
+        with open('game_info.json', 'w') as file:
+            json.dump([new_game_data], file, indent=4)
+    else:
+        with open('game_info.json', 'r+') as file:
+            data = json.load(file)
+            data.append(new_game_data)
+            file.seek(0)
+            json.dump(data, file, indent=4)
 
 def user(user_name: str, win: int, loss: int):
     new_user_data = {
@@ -50,15 +59,7 @@ def user(user_name: str, win: int, loss: int):
             file.seek(0)
             json.dump(data, file, indent=4)
 
-    if not os.path.exists('game_info.json'):
-        with open('game_info.json', 'w') as file:
-            json.dump([new_game_data], file, indent=4)
-    else:
-        with open('game_info.json', 'r+') as file:
-            data = json.load(file)
-            data.append(new_game_data)
-            file.seek(0)
-            json.dump(data, file, indent=4)
+
 
 
 
@@ -115,7 +116,13 @@ playground_original = [[" "," "," "," "," "," "," "," ", 2 ," "," "," "," "," ",
 def clear():
     os.system('cls||clear')
 
-
+def save():
+    global  row1 , column1 , row2 , column2 ,playground_original , turn ,result ,  is_running 
+    is_running = False
+    clear()
+    game_id = input('enter your game ID: ')
+    game(login_signup.player_1,login_signup.player_2,[row1,column1],[row2,column2],playground_original,turn,result , game_id)
+    exit()
 row1 , column1 = 16 , 8
 row2 , column2 = 0 , 8
 
