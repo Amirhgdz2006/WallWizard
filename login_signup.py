@@ -4,15 +4,14 @@ import bcrypt
 import uuid
 import os
 from termcolor import colored
+import quoridor_algorithm
 import time
-<<<<<<< HEAD
-# import quoridor_algorithm
 
 players = {}
-=======
+
 import quoridor_algorithm
 global player_1 , player_2
->>>>>>> 62693df217eda599c464a6401f2dcbc4ee5af80e
+
 
 def clear():
     os.system('cls||clear')
