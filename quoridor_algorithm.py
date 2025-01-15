@@ -70,7 +70,7 @@ def user(user_name: str, win: int, loss: int):
             file.seek(0)
             json.dump(data, file, indent=4)
                     
-playground = [[" ","|"," ","|"," ","|"," ","|", 2 ,"|"," ","|"," ","|"," ","|"," "],
+playground = [[" ","|"," ","|"," ","|"," ","|", " " ,"|"," ","|"," ","|"," ","|"," "],
               ["—","+","—","+","—","+","—","+","—","+","—","+","—","+","—","+","—"],
               [" ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," "],
               ["—","+","—","+","—","+","—","+","—","+","—","+","—","+","—","+","—"],
@@ -86,9 +86,9 @@ playground = [[" ","|"," ","|"," ","|"," ","|", 2 ,"|"," ","|"," ","|"," ","|","
               ["—","+","—","+","—","+","—","+","—","+","—","+","—","+","—","+","—"],
               [" ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," "],
               ["—","+","—","+","—","+","—","+","—","+","—","+","—","+","—","+","—"],
-              [" ","|"," ","|"," ","|"," ","|", 1 ,"|"," ","|"," ","|"," ","|"," "]]
+              [" ","|"," ","|"," ","|"," ","|", " " ,"|"," ","|"," ","|"," ","|"," "]]
 
-playground_original = [[" "," "," "," "," "," "," "," ", 2 ," "," "," "," "," "," "," "," "],
+playground_original = [[" "," "," "," "," "," "," "," ", " " ," "," "," "," "," "," "," "," "],
                        [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
                        [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
                        [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
@@ -104,7 +104,7 @@ playground_original = [[" "," "," "," "," "," "," "," ", 2 ," "," "," "," "," ",
                        [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
                        [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
                        [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
-                       [" "," "," "," "," "," "," "," ", 1 ," "," "," "," "," "," "," "," "]]
+                       [" "," "," "," "," "," "," "," ", " " ," "," "," "," "," "," "," "," "]]
 
 def clear():
     os.system('cls||clear')
@@ -118,7 +118,10 @@ def save():
     exit()
 row1 , column1 = 16 , 8
 row2 , column2 = 0 , 8
-
+playground[row1][column1] = 1
+playground_original[row1][column1] = 1
+playground[row2][column2] = 2
+playground_original[row2][column2] = 2
 wall_player_1 = 10
 wall_player_2 = 10
 
@@ -187,7 +190,7 @@ def refresh_screen():
     print(colored('|   player 1 walls : ',"light_green"),colored(f"{wall_player_1:02}","light_yellow"),colored('         |',"light_green"))
     print(colored('|   player 2 walls : ',"light_green"),colored(f"{wall_player_2:02}","light_yellow"),colored('         |',"light_green"))
     print(colored(' ————————————————————————————————— ',"light_green"))
-    sound('sounds/sound.mp3')
+    print()
 
 
 
@@ -217,20 +220,85 @@ def check_move(pawn,command):
                 if row2 + 2 == row1 and column2  == column1 :
                     if row1 - 4 >= 0 :
                         if playground_original[row1 - 3][column1] == 0 :
-                            print(colored("Move blocked by wall, please try again","red"))
-                            while True:
-                                command = input(f"Enter move command: ").lower()
-                                if command == "u" or command == "d" or command == "l" or command == "r" :
-                                    check_move(1,command)
-                                    break
-                                elif command == "wall":
-                                    wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
-                                    check_wall(wall_command)
-                                    break
-                                elif command == "save" :
-                                    save()
+                            if 2 <= column1 <= 14 and playground_original[row1 -2][column1+1] != 0 or playground_original[row1 -2][column1-1] != 0:
+                                diagonal_command = input("Enter diagonal move command ( r , l ): ")
+                                if diagonal_command == "r" :
+                                    if playground_original[row1 - 2][column1 + 1] != 0 :
+                                        playground[row1][column1] = " "
+                                        playground_original[row1][column1] = " "
+                                        row1 -= 2
+                                        column1 += 2
+                                        playground[row1][column1] = 1
+                                        playground_original[row1][column1] = 1
+                                    else:
+                                        print(colored("Move blocked by wall, please try again","red"))
+                                        while True:
+                                            command = input(f"Enter move command: ").lower()
+                                            if command == "u" or command == "d" or command == "l" or command == "r" :
+                                                check_move(1,command)
+                                                break
+                                            elif command == "wall":
+                                                wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
+                                                check_wall(wall_command)
+                                                break
+                                            elif command == "save" :
+                                                save()
+                                            else:
+                                                print(colored("Invalid command, please  try again","red"))
+
+                                elif diagonal_command == "l" :
+                                    if playground_original[row1 - 2][column1 - 1] != 0 :
+                                        playground[row1][column1] = " "
+                                        playground_original[row1][column1] = " "
+                                        row1 -= 2
+                                        column1 -= 2
+                                        playground[row1][column1] = 1
+                                        playground_original[row1][column1] = 1
+                                    else:
+                                        print(colored("Move blocked by wall, please try again","red"))
+                                        while True:
+                                            command = input(f"Enter move command: ").lower()
+                                            if command == "u" or command == "d" or command == "l" or command == "r" :
+                                                check_move(1,command)
+                                                break
+                                            elif command == "wall":
+                                                wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
+                                                check_wall(wall_command)
+                                                break
+                                            elif command == "save" :
+                                                save()
+                                            else:
+                                                print(colored("Invalid command, please  try again","red"))
                                 else:
                                     print(colored("Invalid command, please  try again","red"))
+                                    while True:
+                                        command = input(f"Enter move command: ").lower()
+                                        if command == "u" or command == "d" or command == "l" or command == "r" :
+                                            check_move(1,command)
+                                            break
+                                        elif command == "wall":
+                                            wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
+                                            check_wall(wall_command)
+                                            break
+                                        elif command == "save" :
+                                            save()
+                                        else:
+                                            print(colored("Invalid command, please  try again","red"))
+                            else:
+                                print(colored("Move blocked by wall, please try again","red"))
+                                while True:
+                                    command = input(f"Enter move command: ").lower()
+                                    if command == "u" or command == "d" or command == "l" or command == "r" :
+                                        check_move(1,command)
+                                        break
+                                    elif command == "wall":
+                                        wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
+                                        check_wall(wall_command)
+                                        break
+                                    elif command == "save" :
+                                        save()
+                                    else:
+                                        print(colored("Invalid command, please  try again","red"))
                         else:    
                             playground[row1][column1] = " "
                             playground_original[row1][column1] = " "
@@ -299,20 +367,85 @@ def check_move(pawn,command):
                 if row1 + 2 == row2 and column2  == column1 :
                     if row2 - 4 >= 0 :
                         if playground_original[row2 - 3][column2] == 0 :
-                            print(colored("Move blocked by wall, please try again","red"))
-                            while True:
-                                command = input(f"Enter move command: ").lower()
-                                if command == "u" or command == "d" or command == "l" or command == "r" :
-                                    check_move(2,command)
-                                    break
-                                elif command == "wall":
-                                    wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
-                                    check_wall(wall_command)
-                                    break
-                                elif command == "save" :
-                                    save()
+                            if 2 <= column2 <= 14 and playground_original[row2 -2][column2+1] != 0 or playground_original[row2 -2][column2-1] != 0:
+                                diagonal_command = input("Enter diagonal move command ( r , l ): ")
+                                if diagonal_command == "r" :
+                                    if playground_original[row2 - 2][column2 + 1] != 0 :
+                                        playground[row2][column2] = " "
+                                        playground_original[row2][column2] = " "
+                                        row2 -= 2
+                                        column2 += 2
+                                        playground[row2][column2] = 2
+                                        playground_original[row2][column2] = 2
+                                    else:
+                                        print(colored("Move blocked by wall, please try again","red"))
+                                        while True:
+                                            command = input(f"Enter move command: ").lower()
+                                            if command == "u" or command == "d" or command == "l" or command == "r" :
+                                                check_move(2,command)
+                                                break
+                                            elif command == "wall":
+                                                wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
+                                                check_wall(wall_command)
+                                                break
+                                            elif command == "save" :
+                                                save()
+                                            else:
+                                                print(colored("Invalid command, please  try again","red"))
+
+                                elif diagonal_command == "l" :
+                                    if playground_original[row2 - 2][column2 - 1] != 0 :
+                                        playground[row2][column2] = " "
+                                        playground_original[row2][column2] = " "
+                                        row2 -= 2
+                                        column2 -= 2
+                                        playground[row2][column2] = 2
+                                        playground_original[row2][column2] = 2
+                                    else:
+                                        print(colored("Move blocked by wall, please try again","red"))
+                                        while True:
+                                            command = input(f"Enter move command: ").lower()
+                                            if command == "u" or command == "d" or command == "l" or command == "r" :
+                                                check_move(2,command)
+                                                break
+                                            elif command == "wall":
+                                                wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
+                                                check_wall(wall_command)
+                                                break
+                                            elif command == "save" :
+                                                save()
+                                            else:
+                                                print(colored("Invalid command, please  try again","red"))
                                 else:
                                     print(colored("Invalid command, please  try again","red"))
+                                    while True:
+                                        command = input(f"Enter move command: ").lower()
+                                        if command == "u" or command == "d" or command == "l" or command == "r" :
+                                            check_move(1,command)
+                                            break
+                                        elif command == "wall":
+                                            wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
+                                            check_wall(wall_command)
+                                            break
+                                        elif command == "save" :
+                                            save()
+                                        else:
+                                            print(colored("Invalid command, please  try again","red"))
+                            else:
+                                print(colored("Move blocked by wall, please try again","red"))
+                                while True:
+                                    command = input(f"Enter move command: ").lower()
+                                    if command == "u" or command == "d" or command == "l" or command == "r" :
+                                        check_move(2,command)
+                                        break
+                                    elif command == "wall":
+                                        wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
+                                        check_wall(wall_command)
+                                        break
+                                    elif command == "save" :
+                                        save()
+                                    else:
+                                        print(colored("Invalid command, please  try again","red"))
                         else:    
                             playground[row2][column2] = " "
                             playground_original[row2][column2] = " "
@@ -384,27 +517,91 @@ def check_move(pawn,command):
                 if row2 - 2 == row1 and column2  == column1 :
                     if row1 + 4 <= 16 :
                         if playground_original[row1 + 3][column1] == 0 :
-                            print(colored("Move blocked by wall, please try again","red"))
-                            while True:
-                                command = input(f"Enter move command: ").lower()
-                                if command == "u" or command == "d" or command == "l" or command == "r" :
-                                    check_move(1,command)
-                                    break
-                                elif command == "wall":
-                                    wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
-                                    check_wall(wall_command)
-                                    break
-                                elif command == "save" :
-                                    save()
+                            if 2 <= column1 <= 14 and playground_original[row1 + 2][column1+1] != 0 or playground_original[row1 + 2][column1-1] != 0:
+                                diagonal_command = input("Enter diagonal move command ( r , l ): ")
+                                if diagonal_command == "r" :
+                                    if playground_original[row1 + 2][column1 + 1] != 0 :
+                                        playground[row1][column1] = " "
+                                        playground_original[row1][column1] = " "
+                                        row1 += 2
+                                        column1 += 2
+                                        playground[row1][column1] = 1
+                                        playground_original[row1][column1] = 1
+                                    else:
+                                        print(colored("Move blocked by wall, please try again","red"))
+                                        while True:
+                                            command = input(f"Enter move command: ").lower()
+                                            if command == "u" or command == "d" or command == "l" or command == "r" :
+                                                check_move(1,command)
+                                                break
+                                            elif command == "wall":
+                                                wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
+                                                check_wall(wall_command)
+                                                break
+                                            elif command == "save" :
+                                                save()
+                                            else:
+                                                print(colored("Invalid command, please  try again","red"))
+
+                                elif diagonal_command == "l" :
+                                    if playground_original[row1 + 2][column1 - 1] != 0 :
+                                        playground[row1][column1] = " "
+                                        playground_original[row1][column1] = " "
+                                        row1 += 2
+                                        column1 -= 2
+                                        playground[row1][column1] = 2
+                                        playground_original[row1][column1] = 2
+                                    else:
+                                        print(colored("Move blocked by wall, please try again","red"))
+                                        while True:
+                                            command = input(f"Enter move command: ").lower()
+                                            if command == "u" or command == "d" or command == "l" or command == "r" :
+                                                check_move(1,command)
+                                                break
+                                            elif command == "wall":
+                                                wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
+                                                check_wall(wall_command)
+                                                break
+                                            elif command == "save" :
+                                                save()
+                                            else:
+                                                print(colored("Invalid command, please  try again","red"))
                                 else:
                                     print(colored("Invalid command, please  try again","red"))
+                                    while True:
+                                        command = input(f"Enter move command: ").lower()
+                                        if command == "u" or command == "d" or command == "l" or command == "r" :
+                                            check_move(1,command)
+                                            break
+                                        elif command == "wall":
+                                            wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
+                                            check_wall(wall_command)
+                                            break
+                                        elif command == "save" :
+                                            save()
+                                        else:
+                                            print(colored("Invalid command, please  try again","red"))
+                            else:
+                                print(colored("Move blocked by wall, please try again","red"))
+                                while True:
+                                    command = input(f"Enter move command: ").lower()
+                                    if command == "u" or command == "d" or command == "l" or command == "r" :
+                                        check_move(1,command)
+                                        break
+                                    elif command == "wall":
+                                        wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
+                                        check_wall(wall_command)
+                                        break
+                                    elif command == "save" :
+                                        save()
+                                    else:
+                                        print(colored("Invalid command, please  try again","red"))
                         else:    
                             playground[row1][column1] = " "
                             playground_original[row1][column1] = " "
                             row1 += 4
                             playground[row1][column1] = 1
                             playground_original[row1][column1] = 1
-                            
                     else:
                         print(colored("Invalid move, please try again","red"))
                         while True:
@@ -463,33 +660,97 @@ def check_move(pawn,command):
                 if row1 - 2 == row2 and column2  == column1 :
                     if row2 + 4 <= 16 :
                         if playground_original[row2 + 3][column2] == 0 :
-                            print(colored("Move blocked by wall, please try again","red"))
-                            while True:
-                                command = input(f"Enter move command: ").lower()
-                                if command == "u" or command == "d" or command == "l" or command == "r" :
-                                    check_move(2,command)
-                                    break
-                                elif command == "wall":
-                                    wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
-                                    check_wall(wall_command)
-                                    break
-                                elif command == "save" :
-                                    save()
+                            if 2 <= column2 <= 14 and playground_original[row2 + 2][column2+1] != 0 or playground_original[row2 + 2][column2-1] != 0:
+                                diagonal_command = input("Enter diagonal move command ( r , l ): ")
+                                if diagonal_command == "r" :
+                                    if playground_original[row2 + 2][column2 + 1] != 0 :
+                                        playground[row2][column2] = " "
+                                        playground_original[row2][column2] = " "
+                                        row2 += 2
+                                        column2 += 2
+                                        playground[row2][column2] = 2
+                                        playground_original[row2][column2] = 2
+                                    else:
+                                        print(colored("Move blocked by wall, please try again","red"))
+                                        while True:
+                                            command = input(f"Enter move command: ").lower()
+                                            if command == "u" or command == "d" or command == "l" or command == "r" :
+                                                check_move(2,command)
+                                                break
+                                            elif command == "wall":
+                                                wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
+                                                check_wall(wall_command)
+                                                break
+                                            elif command == "save" :
+                                                save()
+                                            else:
+                                                print(colored("Invalid command, please  try again","red"))
+
+                                elif diagonal_command == "l" :
+                                    if playground_original[row2 + 2][column2 - 1] != 0 :
+                                        playground[row2][column2] = " "
+                                        playground_original[row2][column2] = " "
+                                        row2 += 2
+                                        column2 -= 2
+                                        playground[row2][column2] = 2
+                                        playground_original[row2][column2] = 2
+                                    else:
+                                        print(colored("Move blocked by wall, please try again","red"))
+                                        while True:
+                                            command = input(f"Enter move command: ").lower()
+                                            if command == "u" or command == "d" or command == "l" or command == "r" :
+                                                check_move(2,command)
+                                                break
+                                            elif command == "wall":
+                                                wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
+                                                check_wall(wall_command)
+                                                break
+                                            elif command == "save" :
+                                                save()
+                                            else:
+                                                print(colored("Invalid command, please  try again","red"))
                                 else:
                                     print(colored("Invalid command, please  try again","red"))
+                                    while True:
+                                        command = input(f"Enter move command: ").lower()
+                                        if command == "u" or command == "d" or command == "l" or command == "r" :
+                                            check_move(1,command)
+                                            break
+                                        elif command == "wall":
+                                            wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
+                                            check_wall(wall_command)
+                                            break
+                                        elif command == "save" :
+                                            save()
+                                        else:
+                                            print(colored("Invalid command, please  try again","red"))
+                            else:
+                                print(colored("Move blocked by wall, please try again","red"))
+                                while True:
+                                    command = input(f"Enter move command: ").lower()
+                                    if command == "u" or command == "d" or command == "l" or command == "r" :
+                                        check_move(2,command)
+                                        break
+                                    elif command == "wall":
+                                        wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
+                                        check_wall(wall_command)
+                                        break
+                                    elif command == "save" :
+                                        save()
+                                    else:
+                                        print(colored("Invalid command, please  try again","red"))
                         else:    
                             playground[row2][column2] = " "
                             playground_original[row2][column2] = " "
                             row2 += 4
                             playground[row2][column2] = 2
                             playground_original[row2][column2] = 2
-                            
                     else:
                         print(colored("Invalid move, please try again","red"))
                         while True:
                             command = input(f"Enter move command: ").lower()
                             if command == "u" or command == "d" or command == "l" or command == "r" :
-                                check_move(1,command)
+                                check_move(2,command)
                                 break
                             elif command == "wall":
                                 wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
@@ -545,33 +806,97 @@ def check_move(pawn,command):
                 if column1 + 2 == column2 and row2  == row1 :
                     if column1 + 4 <= 16 :
                         if playground_original[row1][column1 + 3] == 0 :
-                            print(colored("Move blocked by wall, please try again","red"))
-                            while True:
-                                command = input(f"Enter move command: ").lower()
-                                if command == "u" or command == "d" or command == "l" or command == "r" :
-                                    check_move(1,command)
-                                    break
-                                elif command == "wall":
-                                    wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
-                                    check_wall(wall_command)
-                                    break
-                                elif command == "save" :
-                                    save()
+                            if 2 <= row1 <= 14 and (playground_original[row1 + 1][column1 + 2] != 0 or playground_original[row1 - 1][column1 + 2] != 0):
+                                diagonal_command = input("Enter diagonal move command ( u , d ): ")
+                                if diagonal_command == "u" :
+                                    if playground_original[row1 - 1][column1 + 2] != 0 :
+                                        playground[row1][column1] = " "
+                                        playground_original[row1][column1] = " "
+                                        row1 -= 2
+                                        column1 += 2
+                                        playground[row1][column1] = 1
+                                        playground_original[row1][column1] = 1
+                                    else:
+                                        print(colored("Move blocked by wall, please try again","red"))
+                                        while True:
+                                            command = input(f"Enter move command: ").lower()
+                                            if command == "u" or command == "d" or command == "l" or command == "r" :
+                                                check_move(1,command)
+                                                break
+                                            elif command == "wall":
+                                                wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
+                                                check_wall(wall_command)
+                                                break
+                                            elif command == "save" :
+                                                save()
+                                            else:
+                                                print(colored("Invalid command, please  try again","red"))
+
+                                elif diagonal_command == "d" :
+                                    if playground_original[row1 + 1][column1 + 2] != 0 :
+                                        playground[row1][column1] = " "
+                                        playground_original[row1][column1] = " "
+                                        row1 += 2
+                                        column1 += 2
+                                        playground[row1][column1] = 1
+                                        playground_original[row1][column1] = 1
+                                    else:
+                                        print(colored("Move blocked by wall, please try again","red"))
+                                        while True:
+                                            command = input(f"Enter move command: ").lower()
+                                            if command == "u" or command == "d" or command == "l" or command == "r" :
+                                                check_move(1,command)
+                                                break
+                                            elif command == "wall":
+                                                wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
+                                                check_wall(wall_command)
+                                                break
+                                            elif command == "save" :
+                                                save()
+                                            else:
+                                                print(colored("Invalid command, please  try again","red"))
                                 else:
                                     print(colored("Invalid command, please  try again","red"))
+                                    while True:
+                                        command = input(f"Enter move command: ").lower()
+                                        if command == "u" or command == "d" or command == "l" or command == "r" :
+                                            check_move(1,command)
+                                            break
+                                        elif command == "wall":
+                                            wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
+                                            check_wall(wall_command)
+                                            break
+                                        elif command == "save" :
+                                            save()
+                                        else:
+                                            print(colored("Invalid command, please  try again","red"))
+                            else:
+                                print(colored("Move blocked by wall, please try again","red"))
+                                while True:
+                                    command = input(f"Enter move command: ").lower()
+                                    if command == "u" or command == "d" or command == "l" or command == "r" :
+                                        check_move(1,command)
+                                        break
+                                    elif command == "wall":
+                                        wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
+                                        check_wall(wall_command)
+                                        break
+                                    elif command == "save" :
+                                        save()
+                                    else:
+                                        print(colored("Invalid command, please  try again","red"))
                         else:    
                             playground[row1][column1] = " "
                             playground_original[row1][column1] = " "
-                            column1 += 4
+                            column1  += 4
                             playground[row1][column1] = 1
                             playground_original[row1][column1] = 1
-                            
                     else:
                         print(colored("Invalid move, please try again","red"))
                         while True:
                             command = input(f"Enter move command: ").lower()
                             if command == "u" or command == "d" or command == "l" or command == "r" :
-                                check_move(1,command)
+                                check_move(2,command)
                                 break
                             elif command == "wall":
                                 wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
@@ -625,20 +950,85 @@ def check_move(pawn,command):
                 if column2 + 2 == column1 and row1  == row2 :
                     if column2 + 4 <= 16 :
                         if playground_original[row2][column2 + 3] == 0 :
-                            print(colored("Move blocked by wall, please try again","red"))
-                            while True:
-                                command = input(f"Enter move command: ").lower()
-                                if command == "u" or command == "d" or command == "l" or command == "r" :
-                                    check_move(2,command)
-                                    break
-                                elif command == "wall":
-                                    wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
-                                    check_wall(wall_command)
-                                    break
-                                elif command == "save" :
-                                    save()
+                            if 2 <= row2 <= 14 and playground_original[row2 + 1][column2 + 2] != 0 or playground_original[row2 - 1][column2 + 2] != 0:
+                                diagonal_command = input("Enter diagonal move command ( u , d ): ")
+                                if diagonal_command == "u" :
+                                    if playground_original[row2 - 1][column2 + 2] != 0 :
+                                        playground[row2][column2] = " "
+                                        playground_original[row2][column2] = " "
+                                        row2 -= 2
+                                        column2 += 2
+                                        playground[row2][column2] = 2
+                                        playground_original[row2][column2] = 2
+                                    else:
+                                        print(colored("Move blocked by wall, please try again","red"))
+                                        while True:
+                                            command = input(f"Enter move command: ").lower()
+                                            if command == "u" or command == "d" or command == "l" or command == "r" :
+                                                check_move(2,command)
+                                                break
+                                            elif command == "wall":
+                                                wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
+                                                check_wall(wall_command)
+                                                break
+                                            elif command == "save" :
+                                                save()
+                                            else:
+                                                print(colored("Invalid command, please  try again","red"))
+
+                                elif diagonal_command == "d" :
+                                    if playground_original[row2 + 1][column2 + 2] != 0 :
+                                        playground[row2][column2] = " "
+                                        playground_original[row2][column2] = " "
+                                        row2 += 2
+                                        column2 += 2
+                                        playground[row2][column2] = 2
+                                        playground_original[row2][column2] = 2
+                                    else:
+                                        print(colored("Move blocked by wall, please try again","red"))
+                                        while True:
+                                            command = input(f"Enter move command: ").lower()
+                                            if command == "u" or command == "d" or command == "l" or command == "r" :
+                                                check_move(2,command)
+                                                break
+                                            elif command == "wall":
+                                                wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
+                                                check_wall(wall_command)
+                                                break
+                                            elif command == "save" :
+                                                save()
+                                            else:
+                                                print(colored("Invalid command, please  try again","red"))
                                 else:
                                     print(colored("Invalid command, please  try again","red"))
+                                    while True:
+                                        command = input(f"Enter move command: ").lower()
+                                        if command == "u" or command == "d" or command == "l" or command == "r" :
+                                            check_move(2,command)
+                                            break
+                                        elif command == "wall":
+                                            wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
+                                            check_wall(wall_command)
+                                            break
+                                        elif command == "save" :
+                                            save()
+                                        else:
+                                            print(colored("Invalid command, please  try again","red"))
+                            else:
+                                print(colored("Move blocked by wall, please try again","red"))
+                                while True:
+                                    command = input(f"Enter move command: ").lower()
+                                    if command == "u" or command == "d" or command == "l" or command == "r" :
+                                        check_move(2,command)
+                                        break
+                                    elif command == "wall":
+                                        wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
+                                        check_wall(wall_command)
+                                        break
+                                    elif command == "save" :
+                                        save()
+                                    else:
+                                        print(colored("Invalid command, please  try again","red"))
                         else:    
                             playground[row2][column2] = " "
                             playground_original[row2][column2] = " "
@@ -708,20 +1098,85 @@ def check_move(pawn,command):
                 if column1 - 2 == column2 and row2  == row1 :
                     if column1 - 4 >= 0 :
                         if playground_original[row1][column1 - 3] == 0 :
-                            print(colored("Move blocked by wall, please try again","red"))
-                            while True:
-                                command = input(f"Enter move command: ").lower()
-                                if command == "u" or command == "d" or command == "l" or command == "r" :
-                                    check_move(1,command)
-                                    break
-                                elif command == "wall":
-                                    wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
-                                    check_wall(wall_command)
-                                    break
-                                elif command == "save" :
-                                    save()
+                            if 2 <= row1 <= 14 and playground_original[row1 + 1][column1 - 2] != 0 or playground_original[row1 - 1][column1 - 2] != 0:
+                                diagonal_command = input("Enter diagonal move command ( u , d ): ")
+                                if diagonal_command == "u" :
+                                    if playground_original[row1 - 1][column1 - 2] != 0 :
+                                        playground[row1][column1] = " "
+                                        playground_original[row1][column1] = " "
+                                        row1 -= 2
+                                        column1 -= 2
+                                        playground[row1][column1] = 1
+                                        playground_original[row1][column1] = 1
+                                    else:
+                                        print(colored("Move blocked by wall, please try again","red"))
+                                        while True:
+                                            command = input(f"Enter move command: ").lower()
+                                            if command == "u" or command == "d" or command == "l" or command == "r" :
+                                                check_move(1,command)
+                                                break
+                                            elif command == "wall":
+                                                wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
+                                                check_wall(wall_command)
+                                                break
+                                            elif command == "save" :
+                                                save()
+                                            else:
+                                                print(colored("Invalid command, please  try again","red"))
+
+                                elif diagonal_command == "d" :
+                                    if playground_original[row1 + 1][column1 - 2] != 0 :
+                                        playground[row1][column1] = " "
+                                        playground_original[row1][column1] = " "
+                                        row1 += 2
+                                        column1 -= 2
+                                        playground[row2][column1] = 2
+                                        playground_original[row1][column1] = 2
+                                    else:
+                                        print(colored("Move blocked by wall, please try again","red"))
+                                        while True:
+                                            command = input(f"Enter move command: ").lower()
+                                            if command == "u" or command == "d" or command == "l" or command == "r" :
+                                                check_move(1,command)
+                                                break
+                                            elif command == "wall":
+                                                wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
+                                                check_wall(wall_command)
+                                                break
+                                            elif command == "save" :
+                                                save()
+                                            else:
+                                                print(colored("Invalid command, please  try again","red"))
                                 else:
                                     print(colored("Invalid command, please  try again","red"))
+                                    while True:
+                                        command = input(f"Enter move command: ").lower()
+                                        if command == "u" or command == "d" or command == "l" or command == "r" :
+                                            check_move(1,command)
+                                            break
+                                        elif command == "wall":
+                                            wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
+                                            check_wall(wall_command)
+                                            break
+                                        elif command == "save" :
+                                            save()
+                                        else:
+                                            print(colored("Invalid command, please  try again","red"))
+                            else:
+                                print(colored("Move blocked by wall, please try again","red"))
+                                while True:
+                                    command = input(f"Enter move command: ").lower()
+                                    if command == "u" or command == "d" or command == "l" or command == "r" :
+                                        check_move(1,command)
+                                        break
+                                    elif command == "wall":
+                                        wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
+                                        check_wall(wall_command)
+                                        break
+                                    elif command == "save" :
+                                        save()
+                                    else:
+                                        print(colored("Invalid command, please  try again","red"))
                         else:    
                             playground[row1][column1] = " "
                             playground_original[row1][column1] = " "
@@ -787,21 +1242,86 @@ def check_move(pawn,command):
             elif 0 <= column2 - 2 <= 16 :
                 if column2 - 2 == column1 and row1  == row2 :
                     if column2 - 4 >= 0 :
-                        if playground_original[row2][column2 - 3] == 0 :
-                            print(colored("Move blocked by wall, please try again","red"))
-                            while True:
-                                command = input(f"Enter move command: ").lower()
-                                if command == "u" or command == "d" or command == "l" or command == "r" :
-                                    check_move(2,command)
-                                    break
-                                elif command == "wall":
-                                    wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
-                                    check_wall(wall_command)
-                                    break
-                                elif command == "save" :
-                                    save()
+                        if playground_original[row2][column2 - 3] == 0:
+                            if 2 <= row2 <= 14 and playground_original[row2 + 1][column2 - 2] != 0 or playground_original[row2 - 1][column2 - 2] != 0:
+                                diagonal_command = input("Enter diagonal move command ( u , d ): ")
+                                if diagonal_command == "u" :
+                                    if playground_original[row2 - 1][column2 - 2] != 0 :
+                                        playground[row2][column2] = " "
+                                        playground_original[row2][column2] = " "
+                                        row2 -= 2
+                                        column2 -= 2
+                                        playground[row2][column2] = 2
+                                        playground_original[row2][column2] = 2
+                                    else:
+                                        print(colored("Move blocked by wall, please try again","red"))
+                                        while True:
+                                            command = input(f"Enter move command: ").lower()
+                                            if command == "u" or command == "d" or command == "l" or command == "r" :
+                                                check_move(2,command)
+                                                break
+                                            elif command == "wall":
+                                                wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
+                                                check_wall(wall_command)
+                                                break
+                                            elif command == "save" :
+                                                save()
+                                            else:
+                                                print(colored("Invalid command, please  try again","red"))
+
+                                elif diagonal_command == "d" :
+                                    if playground_original[row2 + 1][column2 - 2] != 0 :
+                                        playground[row2][column2] = " "
+                                        playground_original[row2][column2] = " "
+                                        row2 += 2
+                                        column2 -= 2
+                                        playground[row2][column2] = 2
+                                        playground_original[row2][column2] = 2
+                                    else:
+                                        print(colored("Move blocked by wall, please try again","red"))
+                                        while True:
+                                            command = input(f"Enter move command: ").lower()
+                                            if command == "u" or command == "d" or command == "l" or command == "r" :
+                                                check_move(2,command)
+                                                break
+                                            elif command == "wall":
+                                                wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
+                                                check_wall(wall_command)
+                                                break
+                                            elif command == "save" :
+                                                save()
+                                            else:
+                                                print(colored("Invalid command, please  try again","red"))
                                 else:
                                     print(colored("Invalid command, please  try again","red"))
+                                    while True:
+                                        command = input(f"Enter move command: ").lower()
+                                        if command == "u" or command == "d" or command == "l" or command == "r" :
+                                            check_move(2,command)
+                                            break
+                                        elif command == "wall":
+                                            wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
+                                            check_wall(wall_command)
+                                            break
+                                        elif command == "save" :
+                                            save()
+                                        else:
+                                            print(colored("Invalid command, please  try again","red"))
+                            else:
+                                print(colored("Move blocked by wall, please try again","red"))
+                                while True:
+                                    command = input(f"Enter move command: ").lower()
+                                    if command == "u" or command == "d" or command == "l" or command == "r" :
+                                        check_move(2,command)
+                                        break
+                                    elif command == "wall":
+                                        wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
+                                        check_wall(wall_command)
+                                        break
+                                    elif command == "save" :
+                                        save()
+                                    else:
+                                        print(colored("Invalid command, please  try again","red"))
                         else:    
                             playground[row2][column2] = " "
                             playground_original[row2][column2] = " "
@@ -814,7 +1334,7 @@ def check_move(pawn,command):
                         while True:
                             command = input(f"Enter move command: ").lower()
                             if command == "u" or command == "d" or command == "l" or command == "r" :
-                                check_move(1,command)
+                                check_move(2,command)
                                 break
                             elif command == "wall":
                                 wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
@@ -1171,7 +1691,7 @@ def run_game():
             print(colored(f"         Player one's turn         ", "blue" , "on_light_cyan" , attrs = ["bold"]))
         else :
             print(colored(f"         Player two's turn         ", "white" , "on_red" , attrs = ["bold"]))
-
+        sound('sounds/sound.mp3')
         while True:
             command = input(f"Enter move command: ").lower()
             if command == "u" or command == "d" or command == "l" or command == "r" :
@@ -1223,5 +1743,5 @@ def run_game():
             save()
         
 
-# if __name__ == "__main__":
-#     run_game()
+if __name__ == "__main__":
+    run_game()
