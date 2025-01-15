@@ -31,7 +31,10 @@ def game(player1: str, player2: str, place1: list, place2: list, walls: list, tu
             "result": result
         }
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d54b051595f3a930511c718926f0a0b0f2d395a
     if not os.path.exists('game_info.json'):
         with open('game_info.json', 'w') as file:
             json.dump([new_game_data], file, indent=4)
@@ -42,7 +45,10 @@ def game(player1: str, player2: str, place1: list, place2: list, walls: list, tu
             file.seek(0)
             json.dump(data, file, indent=4)
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d54b051595f3a930511c718926f0a0b0f2d395a
 def user(user_name: str, win: int, loss: int):
     new_user_data = {
         user_name: {
@@ -61,6 +67,24 @@ def user(user_name: str, win: int, loss: int):
             file.seek(0)
             json.dump(data, file, indent=4)
 
+<<<<<<< HEAD
+=======
+
+
+
+
+
+    if not os.path.exists('user_info.json'):
+        with open('user_info.json', 'w') as file:
+            json.dump([new_user_data], file, indent=4)
+    else:
+        with open('user_info.json', 'r+') as file:
+            data = json.load(file)
+            data.append(new_user_data)
+            file.seek(0)
+            json.dump(data, file, indent=4)
+
+>>>>>>> 5d54b051595f3a930511c718926f0a0b0f2d395a
 # -----------------------------------
 
                     
@@ -103,7 +127,13 @@ playground_original = [[" "," "," "," "," "," "," "," ", 2 ," "," "," "," "," ",
 def clear():
     os.system('cls||clear')
 
-
+def save():
+    global  row1 , column1 , row2 , column2 ,playground_original , turn ,result ,  is_running 
+    is_running = False
+    clear()
+    game_id = input('enter your game ID: ')
+    game(login_signup.player_1,login_signup.player_2,[row1,column1],[row2,column2],playground_original,turn,result , game_id)
+    exit()
 row1 , column1 = 16 , 8
 row2 , column2 = 0 , 8
 
@@ -1201,13 +1231,18 @@ def run_game():
             is_running = False
             sound('sounds/tadaa.mp3')
             result = 1
+<<<<<<< HEAD
             save()
+=======
+        
+>>>>>>> 5d54b051595f3a930511c718926f0a0b0f2d395a
 
         elif row2 == 16 :
             victory_text(2)
             is_running = False
             sound('sounds/tadaa.mp3')
             result = 2
+<<<<<<< HEAD
             save()
 
 # if __name__ == "__main__":
@@ -1216,3 +1251,9 @@ def run_game():
 
 
 
+=======
+        
+
+# if __name__ == "__main__":
+#     run_game()
+>>>>>>> 5d54b051595f3a930511c718926f0a0b0f2d395a
