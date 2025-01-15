@@ -16,7 +16,7 @@ from termcolor import colored
 import pygame
 import copy
 import os
-import login_signup1
+import login_signup
 # ----------------------------------- data
 def game(player1: str, player2: str, place1: list, place2: list, walls: list, turn: int, result: bool, game_ID: str):
     new_game_data = {
