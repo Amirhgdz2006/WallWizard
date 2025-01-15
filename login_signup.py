@@ -6,7 +6,6 @@ import os
 from termcolor import colored
 import time
 import quoridor_algorithm
-
 global player_1 , player_2
 
 def clear():
