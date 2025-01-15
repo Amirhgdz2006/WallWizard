@@ -1744,4 +1744,8 @@ def run_game():
         
 
 if __name__ == "__main__":
+<<<<<<< HEAD
     run_game()
+=======
+    run_game()
+>>>>>>> 32872315758f3330fbf22b28bd365f38f0cb98f8
