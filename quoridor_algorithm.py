@@ -1,9 +1,12 @@
 import subprocess
 import sys
+import json
+import os
 from termcolor import colored
 import pygame
 import copy
 import os
+import login_signup
 
 required_modules = ["pygame", "termcolor"]
 
@@ -13,6 +16,65 @@ for module in required_modules:
     except ImportError:
         print(f"installing : {module} \n")
         subprocess.check_call([sys.executable, "-m", "pip", "install", module])
+
+
+# ----------------------------------- data
+def game(player1: str, player2: str, place1: list, place2: list, walls: list, turn: int, result: bool, game_ID: str):
+    new_game_data = {
+        game_ID: {   
+            "player1": player1,
+            "player2": player2,
+            "place1": place1,
+            "place2": place2,
+            "walls": walls,
+            "turn": turn,
+            "result": result
+        }
+    }
+
+def user(user_name: str, win: int, loss: int):
+    new_user_data = {
+        user_name: {
+            'win': win,
+            'loss': loss
+        }
+    }
+
+    if not os.path.exists('user_info.json'):
+        with open('user_info.json', 'w') as file:
+            json.dump([new_user_data], file, indent=4)
+    else:
+        with open('user_info.json', 'r+') as file:
+            data = json.load(file)
+            data.append(new_user_data)
+            file.seek(0)
+            json.dump(data, file, indent=4)
+
+    if not os.path.exists('game_info.json'):
+        with open('game_info.json', 'w') as file:
+            json.dump([new_game_data], file, indent=4)
+    else:
+        with open('game_info.json', 'r+') as file:
+            data = json.load(file)
+            data.append(new_game_data)
+            file.seek(0)
+            json.dump(data, file, indent=4)
+
+
+
+
+    if not os.path.exists('user_info.json'):
+        with open('user_info.json', 'w') as file:
+            json.dump([new_user_data], file, indent=4)
+    else:
+        with open('user_info.json', 'r+') as file:
+            data = json.load(file)
+            data.append(new_user_data)
+            file.seek(0)
+            json.dump(data, file, indent=4)
+
+# -----------------------------------
+
                     
 playground = [[" ","|"," ","|"," ","|"," ","|", 2 ,"|"," ","|"," ","|"," ","|"," "],
               ["—","+","—","+","—","+","—","+","—","+","—","+","—","+","—","+","—"],
@@ -1091,12 +1153,9 @@ def victory_text(pawn):
     print(colored(f'|        Player {pawn} wins !        |',"black","on_yellow"))
     print(colored(' ——————————————————————————————— ',"black","on_yellow"))
 
+result = 0
 def run_game():
-    global turn , is_running
-    def save():
-        is_running = False
-        clear()
-        exit()
+    global turn , is_running , result
     refresh_screen()
     turn = 1
     is_running = True
@@ -1147,10 +1206,15 @@ def run_game():
             victory_text(1)
             is_running = False
             sound('sounds/tadaa.mp3')
+            result = 1
+        
 
         elif row2 == 16 :
             victory_text(2)
             is_running = False
             sound('sounds/tadaa.mp3')
-if __name__ == "__main__":
-    run_game()
+            result = 2
+        
+
+# if __name__ == "__main__":
+#     run_game()
