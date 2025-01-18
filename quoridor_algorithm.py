@@ -1805,7 +1805,7 @@ def run_game():
             print(colored(f"         Player one's turn         ", "blue" , "on_light_cyan" , attrs = ["bold"]))
         else :
             print(colored(f"         Player two's turn         ", "white" , "on_red" , attrs = ["bold"]))
-        sound('sounds/sound.mp3')
+        sound('sound.mp3')
         while True:
             command = input(f"Enter move command: ").lower()
             if command == "u" or command == "d" or command == "l" or command == "r" :
@@ -1867,7 +1867,7 @@ def run_game():
             with open('info.json', 'w') as file:
                 json.dump(data, file) 
 
-            sound('sounds/tadaa.mp3')
+            sound('ftadaa.mp3')
 
         elif row2 == 16 :
             victory_text(2)
@@ -1894,7 +1894,7 @@ def run_game():
             with open('info.json', 'w') as file:
                 json.dump(data, file) 
 
-            sound('sounds/tadaa.mp3')
+            sound('tadaa.mp3')
 # --------------
 
 if __name__ == "__main__":
