@@ -1,3 +1,18 @@
+# Amirhossein Goodarzi / Ali Ghenatgar / Mobina Shokohi / Niousha Gilani
+
+import subprocess
+import sys
+
+# -------------- to download the required modules 
+required_modules = ["pygame", "termcolor" , "bcrypt" , "uuid"]
+
+for module in required_modules:
+    try:
+        __import__(module)
+    except ImportError:
+        print(f"installing : {module} \n")
+        subprocess.check_call([sys.executable, "-m", "pip", "install", module])
+# --------------
 import json
 import re
 import bcrypt
@@ -8,13 +23,12 @@ import quoridor_algorithm
 import time
 
 players = {}
-
-import quoridor_algorithm
-global player_1 , player_2
+global player_1 , player_2 , previous_game_value
 
 
 def clear():
     os.system('cls||clear')
+
 
 def load_users():
     try:
@@ -23,9 +37,11 @@ def load_users():
     except (FileNotFoundError, json.JSONDecodeError):
         return {}
 
+
 def save_users(users):
     with open('users.json', 'w') as file:
         json.dump(users, file)
+
 
 def load_info_game():
     try:
@@ -34,15 +50,19 @@ def load_info_game():
     except (FileNotFoundError, json.JSONDecodeError):
         return {}
 
+
 def save_info_game(info):
     with open('info.json', 'w') as file:
         json.dump(info, file)
+
 
 def validate_email(email):
     regex = r'[\w._%+-]+@[\w.-]+\.[a-zA-Z]{2,4}'
     return re.match(regex, email) is not None
 
+
 def game(users, current_user):
+    
     playing = True
 
     while playing:
@@ -52,18 +72,24 @@ def game(users, current_user):
         if choice.upper() == 'A':
             print(colored("Starting a new game...", "blue"))
             new_game(users, current_user)
-            # quoridor_algorithm.run_game()
-            print(players)
+            
+            quoridor_algorithm.run_game()
             exit()
 
         elif choice.upper() == 'B':
             print(colored("Continuing previous game...\n", "blue"))
+            
+            previous_game_id = input(colored("Which game do you want to play? : ", "black"))
+            
+            with open('previous_game_info.json', 'w') as file:
+                json.dump([previous_game_id],file)
 
+            quoridor_algorithm.run_game()
+            exit()
 
         elif choice.upper() == 'C':
             print(colored("Displaying winner chart...\n", "blue"))
-            info = load_info_game()
-            calculate_and_sort(info)
+            calculate_and_sort()
 
         elif choice.upper() == 'F':
             print(colored("Exiting menu...", "red"))
@@ -74,7 +100,10 @@ def game(users, current_user):
 
 
 def new_game(users, current_user):
+    global player_1 , player_2 , main_user
     username = input(colored("Player 2 username: ", "black"))
+
+    
     def check_username(username):
         if username.lower() == "back":
             clear()
@@ -95,6 +124,14 @@ def new_game(users, current_user):
             check_username(username)
     check_username(username)
     clear()
+
+
+    player_1 = main_user
+    player_2 = username
+
+    with open('p1_p2.json', 'w') as file:
+        json.dump([player_1,player_2], file)
+
     password = input(colored("Player 2 password: ", "black"))
     def check_password(password):
         
@@ -110,7 +147,6 @@ def new_game(users, current_user):
             check_password(password)
     check_password(password)
     clear()
-    
     if username in users:
         hashed_password = users[username]['password'].encode('utf-8')
         if bcrypt.checkpw(password.encode('utf-8'), hashed_password) and users[username]:
@@ -119,7 +155,9 @@ def new_game(users, current_user):
         else:
             print(colored("Incorrect password", "red"))
 
+
 def login(users):
+    global main_user
     username = input(colored("Username:\n", "black"))
     def check_username(username):
         if username.lower() == "back":
@@ -174,14 +212,20 @@ def login(users):
             hashed_password = users[username]['password'].encode('utf-8')
             if bcrypt.checkpw(password.encode('utf-8'), hashed_password) and users[username]['email'] == email:
                 print(colored("Login successful\nEnjoy the game\n", "light_yellow"))
+                main_user = username
                 game(users, username)
             else:
                 print(colored("Incorrect email or password", "light_red"))
                 time.sleep(1)
                 clear()
+                password = input(colored("Password:\n", "black"))
+                check_password(password)
+                clear()
                 email = input(colored("Email:\n", "black"))
                 check_email(email)
+                clear()
         check_email(email)
+
 
 def signup(users, info):
     
@@ -252,16 +296,29 @@ def signup(users, info):
     print(colored("Sign up successful!\n", "yellow"))
     game(users, username)
 
-def calculate_and_sort(info):
-    differences = {}
-    for username, data in info.items():
-        difference = data['winner'] - data['loser']
-        differences[username] = difference
-    sorted_users = sorted(differences.items(), key=lambda item: item[1], reverse=True)
-    print(colored("Winner chart:\n", "yellow"))
-    for username, difference in sorted_users:
-        print(f"{username}: {difference}")
+
+def calculate_and_sort():
     clear()
+
+    with open('info.json', 'r') as file:
+        data = json.load(file)
+
+    sorted_data = dict(sorted(data.items(), key=lambda item: (item[1]['winner'] - item[1]['loser']), reverse=True))
+
+
+    lst_show = []
+    for item in sorted_data:
+        lst_show.append(f"{colored(item ,'yellow')} : [ win : {colored(data[item]['winner'] , 'green')} , loss : {colored(data[item]['loser'] , 'red')} ]")
+
+    for person in lst_show:
+        print(person)
+
+    entry_e = input(colored('Type anything to back in Menu : ' , 'yellow')) 
+    if entry_e.upper() == 'EXIT':
+        main()
+    else:
+        main()
+
 
 def main():
     clear()
@@ -281,5 +338,6 @@ def main():
             break
         else:
             print(colored("Error\nPlease try\n\n"))
+
 
 main()            

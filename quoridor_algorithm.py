@@ -1,46 +1,37 @@
-import subprocess
-import sys
-
-required_modules = ["pygame", "termcolor"]
-
-for module in required_modules:
-    try:
-        __import__(module)
-    except ImportError:
-        print(f"installing : {module} \n")
-        subprocess.check_call([sys.executable, "-m", "pip", "install", module])
+# Amirhossein Goodarzi / Ali Ghenatgar / Mobina Shokohi / Niousha Gilani
 
 import json
-import os
 from termcolor import colored
+import os
 import pygame
 import copy
-import os
-import login_signup
-# ----------------------------------- data
-def game(player1: str, player2: str, place1: list, place2: list, walls: list, turn: int, result: bool, game_ID: str):
-    new_game_data = {
-        game_ID: {   
-            "player1": player1,
-            "player2": player2,
-            "place1": place1,
-            "place2": place2,
-            "walls": walls,
-            "turn": turn,
-            "result": result
-        }
+
+# -------------- saving game info
+def game(player1: str, player2: str, place1: list, place2: list, walls: list, turn: int, result: bool, game_ID: str): 
+    new_game_data = {   
+        "player1": player1,
+        "player2": player2,
+        "place1": place1,
+        "place2": place2,
+        "walls": walls,
+        "turn": turn,
+        "result": result
     }
 
     if not os.path.exists('game_info.json'):
+
         with open('game_info.json', 'w') as file:
-            json.dump([new_game_data], file, indent=4)
+            json.dump({game_ID: new_game_data}, file, indent=4)
     else:
         with open('game_info.json', 'r+') as file:
             data = json.load(file)
-            data.append(new_game_data)
+            data[game_ID] = new_game_data 
             file.seek(0)
             json.dump(data, file, indent=4)
+            file.truncate()
+# --------------
 
+# -------------- saving user info
 def user(user_name: str, win: int, loss: int):
     new_user_data = {
         user_name: {
@@ -69,7 +60,9 @@ def user(user_name: str, win: int, loss: int):
             data.append(new_user_data)
             file.seek(0)
             json.dump(data, file, indent=4)
-                    
+# --------------
+
+# -------------- main playground
 playground = [[" ","|"," ","|"," ","|"," ","|", " " ,"|"," ","|"," ","|"," ","|"," "],
               ["—","+","—","+","—","+","—","+","—","+","—","+","—","+","—","+","—"],
               [" ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," "],
@@ -87,7 +80,9 @@ playground = [[" ","|"," ","|"," ","|"," ","|", " " ,"|"," ","|"," ","|"," ","|"
               [" ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," ","|"," "],
               ["—","+","—","+","—","+","—","+","—","+","—","+","—","+","—","+","—"],
               [" ","|"," ","|"," ","|"," ","|", " " ,"|"," ","|"," ","|"," ","|"," "]]
+# --------------
 
+# -------------- playground for walls
 playground_original = [[" "," "," "," "," "," "," "," ", " " ," "," "," "," "," "," "," "," "],
                        [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
                        [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
@@ -105,17 +100,14 @@ playground_original = [[" "," "," "," "," "," "," "," ", " " ," "," "," "," "," 
                        [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
                        [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
                        [" "," "," "," "," "," "," "," ", " " ," "," "," "," "," "," "," "," "]]
+# --------------
 
 def clear():
     os.system('cls||clear')
 
-def save():
-    global  row1 , column1 , row2 , column2 ,playground_original , turn ,result ,  is_running 
-    is_running = False
-    clear()
-    game_id = input('enter your game ID: ')
-    game(login_signup.player_1,login_signup.player_2,[row1,column1],[row2,column2],playground_original,turn,result , game_id)
-    exit()
+clear()
+
+# -------------- placing default positions
 row1 , column1 = 16 , 8
 row2 , column2 = 0 , 8
 playground[row1][column1] = 1
@@ -124,8 +116,55 @@ playground[row2][column2] = 2
 playground_original[row2][column2] = 2
 wall_player_1 = 10
 wall_player_2 = 10
+# --------------
+
+# -------------- for loading previous games
+def previous_game():
+    global playground_original, playground, row1, column1, row2, column2 , previous_game_value
+
+    if not os.path.exists('game_info.json'):
+        with open('game_info.json', 'w') as file:
+            json.dump({}, file)
 
 
+    if not os.path.exists('previous_game_info.json'):
+        with open('previous_game_info.json', 'w') as file:
+            json.dump([], file)
+    
+    with open('previous_game_info.json', 'r') as file:
+        data2 = json.load(file)
+
+
+    if data2 != []:
+
+        previous_game_id = data2[0]
+
+        with open('game_info.json', 'r') as file:
+            data = json.load(file)
+
+
+        playground_original[row1][column1] = " "
+        playground_original[row2][column2] = " "
+        playground[row1][column1] = " "
+        playground[row2][column2] = " "
+
+        row1 = data[previous_game_id]["place1"][0]
+        column1 = data[previous_game_id]["place1"][1]
+        row2 = data[previous_game_id]["place2"][0]
+        column2 = data[previous_game_id]["place2"][1]
+
+        playground_original[row1][column1] = 1
+        playground_original[row2][column2] = 2
+        playground[row1][column1] = 1
+        playground[row2][column2] = 2
+
+        playground_original = data[previous_game_id]['walls']
+
+        with open('previous_game_info.json', 'w') as file:
+            json.dump([],file)
+# --------------
+
+# -------------- sounds
 def sound(file):
 
     pygame.mixer.init()
@@ -136,14 +175,28 @@ def sound(file):
     while pygame.mixer.music.get_busy():
         pass
 
+    pygame.quit()
+# --------------
+
+# -------------- saving game info
 def save():
+
     global  row1 , column1 , row2 , column2 ,playground_original , turn ,result ,  is_running 
     is_running = False
     clear()
     game_id = input('enter your game ID: ')
-    game(login_signup.player_1,login_signup.player_2,[row1,column1],[row2,column2],playground_original,turn,result , game_id)
+
+    with open('p1_p2.json', 'r') as file:
+        data = json.load(file)
+    player_1 , player_2 = data[0] , data[1]
+    game(player_1,player_2,[row1,column1],[row2,column2],playground_original,turn,result , game_id)
     exit()
 
+    with open('p1_p2.json', 'w') as file:
+        file.write('')
+# --------------
+
+# -------------- screen refresh and colors 
 def refresh_screen():
 
     num_bar = [" "," ","1"," ","2"," ","3"," ","4"," ","5"," ","6"," ","7"," ","8"," "]
@@ -191,9 +244,9 @@ def refresh_screen():
     print(colored('|   player 2 walls : ',"light_green"),colored(f"{wall_player_2:02}","light_yellow"),colored('         |',"light_green"))
     print(colored(' ————————————————————————————————— ',"light_green"))
     print()
+# --------------
 
-
-
+# -------------- for moving pawn
 def check_move(pawn,command):
     global wall_player_1,wall_player_2
 
@@ -220,7 +273,21 @@ def check_move(pawn,command):
                 if row2 + 2 == row1 and column2  == column1 :
                     if row1 - 4 >= 0 :
                         if playground_original[row1 - 3][column1] == 0 :
-                            if 2 <= column1 <= 14 and playground_original[row1 -2][column1+1] != 0 or playground_original[row1 -2][column1-1] != 0:
+                            if column1 == 0 and playground_original[row1 - 2][column1 + 1] != 0 :
+                                playground[row1][column1] = " "
+                                playground_original[row1][column1] = " "
+                                row1 -= 2
+                                column1 += 2
+                                playground[row1][column1] = 1
+                                playground_original[row1][column1] = 1
+                            elif column1 == 16 and playground_original[row1 - 2][column1 - 1] != 0 :
+                                playground[row1][column1] = " "
+                                playground_original[row1][column1] = " "
+                                row1 -= 2
+                                column1 -= 2
+                                playground[row1][column1] = 1
+                                playground_original[row1][column1] = 1
+                            elif 2 <= column1 <= 14 and ( playground_original[row1 -2][column1+1] != 0 or playground_original[row1 -2][column1-1] ) != 0:
                                 diagonal_command = input("Enter diagonal move command ( r , l ): ")
                                 if diagonal_command == "r" :
                                     if playground_original[row1 - 2][column1 + 1] != 0 :
@@ -367,7 +434,21 @@ def check_move(pawn,command):
                 if row1 + 2 == row2 and column2  == column1 :
                     if row2 - 4 >= 0 :
                         if playground_original[row2 - 3][column2] == 0 :
-                            if 2 <= column2 <= 14 and playground_original[row2 -2][column2+1] != 0 or playground_original[row2 -2][column2-1] != 0:
+                            if column2 == 0 and playground_original[row2 - 2][column2 + 1] != 0 :
+                                playground[row2][column2] = " "
+                                playground_original[row2][column2] = " "
+                                row2 -= 2
+                                column2 += 2
+                                playground[row2][column2] = 2
+                                playground_original[row2][column2] = 2
+                            elif column2 == 16 and playground_original[row2 - 2][column2 - 1] != 0 :
+                                playground[row2][column2] = " "
+                                playground_original[row2][column2] = " "
+                                row2 -= 2
+                                column2 -= 2
+                                playground[row2][column2] = 2
+                                playground_original[row2][column2] = 2
+                            elif 2 <= column2 <= 14 and ( playground_original[row2 -2][column2+1] != 0 or playground_original[row2 -2][column2-1]) != 0:
                                 diagonal_command = input("Enter diagonal move command ( r , l ): ")
                                 if diagonal_command == "r" :
                                     if playground_original[row2 - 2][column2 + 1] != 0 :
@@ -517,7 +598,21 @@ def check_move(pawn,command):
                 if row2 - 2 == row1 and column2  == column1 :
                     if row1 + 4 <= 16 :
                         if playground_original[row1 + 3][column1] == 0 :
-                            if 2 <= column1 <= 14 and playground_original[row1 + 2][column1+1] != 0 or playground_original[row1 + 2][column1-1] != 0:
+                            if column1 == 0 and playground_original[row1 + 2][column1 + 1] != 0 :
+                                playground[row1][column1] = " "
+                                playground_original[row1][column1] = " "
+                                row1 += 2
+                                column1 += 2
+                                playground[row1][column1] = 1
+                                playground_original[row1][column1] = 1
+                            elif column1 == 16 and playground_original[row1 + 2][column1 - 1] != 0 :
+                                playground[row1][column1] = " "
+                                playground_original[row1][column1] = " "
+                                row1 += 2
+                                column1 -= 2
+                                playground[row1][column1] = 1
+                                playground_original[row1][column1] = 1
+                            elif 2 <= column1 <= 14 and ( playground_original[row1 + 2][column1+1] != 0 or playground_original[row1 + 2][column1-1] ) != 0:
                                 diagonal_command = input("Enter diagonal move command ( r , l ): ")
                                 if diagonal_command == "r" :
                                     if playground_original[row1 + 2][column1 + 1] != 0 :
@@ -660,7 +755,21 @@ def check_move(pawn,command):
                 if row1 - 2 == row2 and column2  == column1 :
                     if row2 + 4 <= 16 :
                         if playground_original[row2 + 3][column2] == 0 :
-                            if 2 <= column2 <= 14 and playground_original[row2 + 2][column2+1] != 0 or playground_original[row2 + 2][column2-1] != 0:
+                            if column2 == 0 and playground_original[row2 + 2][column2 + 1] != 0 :
+                                playground[row2][column2] = " "
+                                playground_original[row2][column2] = " "
+                                row2 += 2
+                                column2 += 2
+                                playground[row2][column2] = 2
+                                playground_original[row2][column2] = 2
+                            elif column2 == 16 and playground_original[row2 + 2][column2 - 1] != 0 :
+                                playground[row2][column2] = " "
+                                playground_original[row2][column2] = " "
+                                row2 += 2
+                                column2 -= 2
+                                playground[row2][column2] = 2
+                                playground_original[row2][column2] = 2
+                            elif 2 <= column2 <= 14 and ( playground_original[row2 + 2][column2+1] != 0 or playground_original[row2 + 2][column2-1] != 0 ) :
                                 diagonal_command = input("Enter diagonal move command ( r , l ): ")
                                 if diagonal_command == "r" :
                                     if playground_original[row2 + 2][column2 + 1] != 0 :
@@ -896,7 +1005,7 @@ def check_move(pawn,command):
                         while True:
                             command = input(f"Enter move command: ").lower()
                             if command == "u" or command == "d" or command == "l" or command == "r" :
-                                check_move(2,command)
+                                check_move(1,command)
                                 break
                             elif command == "wall":
                                 wall_command = input("Enter wall command ( center row, center column, direction(h/v) ): ").lower()
@@ -1130,8 +1239,8 @@ def check_move(pawn,command):
                                         playground_original[row1][column1] = " "
                                         row1 += 2
                                         column1 -= 2
-                                        playground[row2][column1] = 2
-                                        playground_original[row1][column1] = 2
+                                        playground[row1][column1] = 1
+                                        playground_original[row1][column1] = 1
                                     else:
                                         print(colored("Move blocked by wall, please try again","red"))
                                         while True:
@@ -1394,8 +1503,9 @@ def check_move(pawn,command):
                 print(colored("No walls remaining","red"))
                 command = input(f"Enter move command: ").lower()
                 check_move(turn,command)
+# --------------
 
-
+# -------------- for placing walls
 def check_wall(wall_command):
     global turn
     global wall_player_1,wall_player_2
@@ -1672,16 +1782,20 @@ def check_wall(wall_command):
             print(colored("Invalid wall, please  try again","red"))
             wall_command = input("Enter wall command ( center row , center column , direction(h/v) ): ").lower()
             check_wall(wall_command)
-       
+# --------------    
 
+# -------------- showing victory 
 def victory_text(pawn):
     print(colored(' ——————————————————————————————— ',"black","on_yellow"),)
     print(colored(f'|        Player {pawn} wins !        |',"black","on_yellow"))
     print(colored(' ——————————————————————————————— ',"black","on_yellow"))
+# --------------
 
 result = 0
+# -------------- main function
 def run_game():
     global turn , is_running , result
+    previous_game()
     refresh_screen()
     turn = 1
     is_running = True
@@ -1731,18 +1845,58 @@ def run_game():
         if row1 == 0 :
             victory_text(1)
             is_running = False
-            sound('sounds/tadaa.mp3')
+
             result = 1
-            save()
+
+            with open('p1_p2.json', 'r') as file:
+                data = json.load(file)
+            player_1 , player_2 = data[0] , data[1]
+
+            with open('info.json', 'r') as file:
+                data = json.load(file)
+
+            win_num = data[player_1]['winner']
+
+            data[player_1]['winner'] = win_num + 1
+
+            loss_num = data[player_2]['loser']
+
+            data[player_2]['loser'] = loss_num + 1
+
+
+            with open('info.json', 'w') as file:
+                json.dump(data, file) 
+
+            sound('sounds/tadaa.mp3')
 
         elif row2 == 16 :
             victory_text(2)
             is_running = False
-            sound('sounds/tadaa.mp3')
+
             result = 2            
-            save()
+
+            with open('p1_p2.json', 'r') as file:
+                data = json.load(file)
+
+            player_1 , player_2 = data[0] , data[1]
         
+            with open('info.json', 'r') as file:
+                data = json.load(file)
+
+            win_num = data[player_2]['winner']
+
+            data[player_2]['winner'] = win_num + 1
+
+            loss_num = data[player_1]['loser']
+
+            data[player_1]['loser'] = loss_num + 1
+
+            with open('info.json', 'w') as file:
+                json.dump(data, file) 
+
+            sound('sounds/tadaa.mp3')
+# --------------
 
 if __name__ == "__main__":
-
+    from login_signup import run_game
     run_game()
